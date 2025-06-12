@@ -1,0 +1,23 @@
+name: SS25
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: build
+        uses: akiojin/unity-build-github-action@v3
+        with:
+          build-target: 'Windows'
+          project-directory: ${{ github.workspace }}/SS25
+          output-directory: ${{ runner.temp }}/Windows
