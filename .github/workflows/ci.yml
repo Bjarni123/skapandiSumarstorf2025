@@ -8,16 +8,39 @@ on:
       - 'v*.*.*'
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: build
-        uses: akiojin/unity-build-github-action@v3
         with:
-          build-target: 'Windows'
-          project-directory: ${{ github.workspace }}/SS25
-          output-directory: ${{ runner.temp }}/Windows
+          lfs: true
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: SS25/Library
+          key: Library-${{ hashFiles('SS25/Assets/**', 'SS25/Packages/**', 'SS25/ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Test
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: SS25
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: SS25
+          targetPlatform: StandaloneWindows64
