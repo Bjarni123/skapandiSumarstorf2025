@@ -3,7 +3,7 @@ using UnityEngine;
 public class AttackHitbox : MonoBehaviour
 {
     public float duration = 0.2f;
-    public int damage = 10;
+    public int damage = 2;
 
     void Start() => Destroy(gameObject, duration);
 

@@ -2,20 +2,11 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int health = 10;
 
     public void TakeDamage(int damageAmount)
     {
-        return;
+        health -= damageAmount;
+        if (health <= 0) Destroy(gameObject);
     }
 }
