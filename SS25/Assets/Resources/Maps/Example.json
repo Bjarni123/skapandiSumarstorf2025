@@ -1,0 +1,15 @@
+{
+    "tiles": [
+        ["Water", "Water", "Water", "Water", "Water", "Water", "Water", "Water"],
+        ["Water", "Grass", "Grass", "Grass", "Grass", "Grass", "Grass", "Water"],
+        ["Water", "Grass", "Grass", "Grass", "Grass", "Grass", "Grass", "Water"],
+        ["Water", "Grass", "Grass", "Grass", "Grass", "Grass", "Grass", "Water"],
+        ["Water", "Grass", "Grass", "Grass", "Grass", "Grass", "Grass", "Water"],
+        ["Water", "Grass", "Grass", "Grass", "Grass", "Grass", "Grass", "Water"],
+        ["Water", "Grass", "Grass", "Grass", "Grass", "Grass", "Grass", "Water"],
+        ["Water", "Water", "Water", "Water", "Water", "Water", "Water", "Water"]
+    ],
+    "objects": {},
+    "monsters": {},
+    "players": {}
+}
