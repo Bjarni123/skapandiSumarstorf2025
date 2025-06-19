@@ -1,6 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;    // new Input System
 
+/*
+
+This is now a script on the sword1 weapon, could be useful to rename this in the future. can't be bothered with it rn
+
+*/
+
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Attack Settings")]
@@ -34,7 +40,7 @@ public class PlayerCombat : MonoBehaviour
         Vector3 spawnPos = transform.position + dir * spawnOffset;
 
         Instantiate(attackPrefab, spawnPos,
-            Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg));
+            Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90));
     }
 
     /*

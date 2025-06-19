@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 26503503}
   - component: {fileID: 26503505}
   - component: {fileID: 26503504}
+  - component: {fileID: 26503506}
+  - component: {fileID: 26503507}
   m_Layer: 0
   m_Name: Sword1
   m_TagString: Untagged
@@ -229,6 +231,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &26503506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26503502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733266f15f2068444af9ddc02f478365, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPrefab: {fileID: 4733922475734108360, guid: 271e04d9d5739bf489624fe68455d255, type: 3}
+  cooldown: 0.5
+  spawnOffset: 0
+  weaponAnimator: {fileID: 26503504}
+--- !u!114 &26503507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26503502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c2e18df2852a2d45966a4bf22382c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 1460217096}
 --- !u!1 &642366110
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +352,6 @@ GameObject:
   - component: {fileID: 1460217094}
   - component: {fileID: 1460217093}
   - component: {fileID: 1460217092}
-  - component: {fileID: 1460217097}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -476,22 +506,6 @@ Transform:
   - {fileID: 26503503}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1460217097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460217091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733266f15f2068444af9ddc02f478365, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackPrefab: {fileID: 4733922475734108360, guid: 271e04d9d5739bf489624fe68455d255, type: 3}
-  cooldown: 0.5
-  spawnOffset: 1
-  weaponAnimator: {fileID: 26503504}
 --- !u!1 &1812058592
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,7 +607,7 @@ GameObject:
   - component: {fileID: 2071368279}
   - component: {fileID: 2071368280}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: MainCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
