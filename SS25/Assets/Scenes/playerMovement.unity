@@ -245,7 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPrefab: {fileID: 4733922475734108360, guid: 271e04d9d5739bf489624fe68455d255, type: 3}
   cooldown: 0.5
-  spawnOffset: 0
+  spawnOffset: 0.3
   weaponAnimator: {fileID: 26503504}
 --- !u!114 &26503507
 MonoBehaviour:
@@ -260,6 +260,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1460217096}
+  weaponAnimator: {fileID: 26503504}
+  offsetDistance: 0.6
 --- !u!1 &642366110
 GameObject:
   m_ObjectHideFlags: 0
