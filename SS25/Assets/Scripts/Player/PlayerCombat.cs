@@ -6,7 +6,10 @@ public class PlayerCombat : MonoBehaviour
     [Header("Attack Settings")]
     public GameObject attackPrefab;
     public float cooldown = 0.5f;
-    public float swordSwishSpawnOffset = 1f;
+    public float spawnOffset = 1f;
+
+    [Header("Animation")]
+    public Animator weaponAnimator;
 
 
     float nextAttackTime = 0f;
@@ -17,10 +20,24 @@ public class PlayerCombat : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame && Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + cooldown;
-            autoAttack();
+            // autoAttack();
+            weaponAnimator.SetTrigger("AutoAttack");
         }
     }
 
+    public void SpawnHitBox()
+    {
+        // compute dir & spawnPos exactly as before...
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        mouseWorld.z = 0;
+        Vector3 dir = (mouseWorld - transform.position).normalized;
+        Vector3 spawnPos = transform.position + dir * spawnOffset;
+
+        Instantiate(attackPrefab, spawnPos,
+            Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg));
+    }
+
+    /*
     void autoAttack()
     {
         // 1. Mouse world position
@@ -42,4 +59,5 @@ public class PlayerCombat : MonoBehaviour
         swish.transform.rotation = Quaternion.Euler(0f, 0f, angle - 30);
 
     }
+    */
 }
