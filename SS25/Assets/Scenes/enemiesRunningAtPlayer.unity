@@ -198,8 +198,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 588733659}
-  detectionRadius: 4
-  speed: 2
+  DetectionRadius: 4
+  MoveSpeed: 5
 --- !u!4 &588733659 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7501659829494390249, guid: fe94147e75631b843a4111048938fbc8, type: 3}
@@ -270,6 +270,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1226652960208641025, guid: 6765ed2c70bb19645a274df7e7be609d, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 588733659}
     - target: {fileID: 1331529822273058682, guid: 6765ed2c70bb19645a274df7e7be609d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.77
@@ -340,11 +344,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -7027504194913502689, guid: 6765ed2c70bb19645a274df7e7be609d, type: 3}
+    - {fileID: 4330573307554149369, guid: 6765ed2c70bb19645a274df7e7be609d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5633943427540558972, guid: 6765ed2c70bb19645a274df7e7be609d, type: 3}
-      insertIndex: -1
+      insertIndex: 5
       addedObject: {fileID: 146008022}
   m_SourcePrefab: {fileID: 100100000, guid: 6765ed2c70bb19645a274df7e7be609d, type: 3}
 --- !u!1001 &1253500791
