@@ -3,13 +3,22 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     public CollectableType type;
-    void OnTriggerEnter2D(Collider2D collision)
+    public Sprite icon;
+    
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         Player player = collision.GetComponent<Player>();
 
         if (player)
         {
-            player.numGoldSeed++;
+            player.inventory.Add(this);
+
+            InventoryUI ui = FindFirstObjectByType<InventoryUI>();
+            if (ui != null)
+            {
+                ui.Setup();
+            }
+
             Destroy(this.gameObject);
         }
     }
@@ -18,5 +27,7 @@ public class Collectable : MonoBehaviour
 public enum CollectableType
 {
     NONE,
-    GOLD_SEED
+    GOLD,
+    FISH,
+    BEEF
 }

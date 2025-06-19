@@ -2,5 +2,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int numGoldSeed = 0;
+    public Inventory inventory;
+
+    private void Awake()
+    {
+        inventory = new Inventory(21);
+    }
 }
