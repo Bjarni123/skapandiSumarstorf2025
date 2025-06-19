@@ -35,8 +35,11 @@ public class PlayerCombat : MonoBehaviour
         Vector3 spawnPos = transform.position + dir * swordSwishSpawnOffset;
 
         // 4. Instantiate and rotate
+ 
+
         GameObject swish = Instantiate(attackPrefab, spawnPos, Quaternion.identity);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        swish.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        swish.transform.rotation = Quaternion.Euler(0f, 0f, angle - 30);
+
     }
 }
