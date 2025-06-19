@@ -1,45 +1,69 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-/*
-public class NewMonoBehaviourScript : MonoBehaviour
+
+[System.Serializable]
+public class Inventory
 {
-    public GameObject inventoryPanel;
-
-    public Player player;
-
-    public List<Slot> slots = List<Slot>();
-
-    // Update is called once per frame
-    void Update()
+    public class Slot
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ToggleInventory();
-        }
-    }
+        public CollectableType type;
+        public int count;
+        public int maxAllowed;
 
-    public void ToggleInventory()
-    {
-        if (!inventoryPanel.activeSelf)
+        public Slot()
         {
-            inventoryPanel.SetActive(true);
+            type = CollectableType.NONE;
+            count = 0;
+            maxAllowed = 99;
         }
-        else {
-            inventoryPanel.SetActive(false);
-        }
-    }
 
-    void Setup
-    {
-        if(slot.Count == player.inventory.slots.Count)
+        public bool CanAddItem()
         {
-            for(int i = 0; i<slots.count; i++)
+            if (count < maxAllowed)
             {
-                if(player.inventory.slots[i].type != CollectableType.NONE)
-                {
-                    pass
-                }
+                return true;
+            }
+
+            return false;
+        }
+
+        public void AddItem(CollectableType type)
+        {
+            this.type = type;
+            count++;
+        }
+    }
+
+    public List<Slot> slots = new List<Slot>();
+
+    public Inventory(int numSlots)
+    {
+        for (int i = 0; i < numSlots; i++)
+        {
+            Slot slot = new Slot();
+            slots.Add(slot);
+        }
+    }
+
+    public void Add(CollectableType typeToAdd)
+    {
+        foreach (Slot slot in slots)
+        {
+            if(slot.type == typeToAdd && slot.CanAddItem())
+            {
+                slot.AddItem(typeToAdd);
+                return;
+            }
+        }
+
+        foreach (Slot slot in slots)
+        {
+            if(slot.type == CollectableType.NONE)
+            {
+                slot.AddItem(typeToAdd);
+                return;
             }
         }
     }
 }
-*/
