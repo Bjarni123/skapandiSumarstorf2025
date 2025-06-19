@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8133196596486362416}
   - component: {fileID: 5864374380462596260}
   - component: {fileID: 2764973648454200524}
+  - component: {fileID: 1226652960208641025}
+  - component: {fileID: 4330573307554149369}
   m_Layer: 0
   m_Name: CircleEnemy
   m_TagString: Untagged
@@ -166,3 +168,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1226652960208641025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5633943427540558972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 755c6a49053b97d428fc0ec67f58d2ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  attackRange: 0.5
+  attackCooldown: 1
+  attackDamage: 1
+--- !u!114 &4330573307554149369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5633943427540558972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9614e28c451283f47934f543e974dc35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7501659829494390249, guid: fe94147e75631b843a4111048938fbc8, type: 3}
+  detectionRadius: 4
+  speed: 2
