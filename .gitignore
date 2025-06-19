@@ -30,3 +30,8 @@ Thumbs.db
 # Rider IDE
 .idea/
 *.sln.iml
+
+# Extra Stuff
+SS25/.vs
+SS25/UserSettings/Layouts/default-6000.dwlt
+*.dwlt
