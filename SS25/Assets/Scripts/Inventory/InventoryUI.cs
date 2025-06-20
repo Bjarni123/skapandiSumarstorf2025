@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using NUnit.Framework;
 
+
+
 public class InventoryUI : MonoBehaviour
 {
     public GameObject inventoryPanel;
@@ -13,6 +15,8 @@ public class InventoryUI : MonoBehaviour
     public Player player;
 
     public List<SlotUI> slots = new List<SlotUI>();
+
+    private SlotUI selectedSlot;
 
     void Start()
     {
@@ -69,5 +73,16 @@ public class InventoryUI : MonoBehaviour
             player.inventory.Remove(slotID);
             Refresh();
         }
+    }
+
+    public void OnSlotClicked(SlotUI slot)
+    {
+        // Unhighlight previous
+        if (selectedSlot != null)
+            selectedSlot.Highlight(false);
+
+        // Highlight new
+        selectedSlot = slot;
+        selectedSlot.Highlight(true);
     }
 }
