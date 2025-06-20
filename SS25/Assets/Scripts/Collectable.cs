@@ -12,13 +12,6 @@ public class Collectable : MonoBehaviour
         if (player)
         {
             player.inventory.Add(this);
-
-            InventoryUI ui = FindFirstObjectByType<InventoryUI>();
-            if (ui != null)
-            {
-                ui.Setup();
-            }
-
             Destroy(this.gameObject);
         }
     }
