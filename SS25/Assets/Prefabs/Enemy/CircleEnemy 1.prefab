@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 1226652960208641025}
   - component: {fileID: 4330573307554149369}
   m_Layer: 0
-  m_Name: CircleEnemy
-  m_TagString: Untagged
+  m_Name: CircleEnemy 1
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -196,6 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9614e28c451283f47934f543e974dc35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 7501659829494390249, guid: fe94147e75631b843a4111048938fbc8, type: 3}
+  player: {fileID: 0}
   DetectionRadius: 4
   MoveSpeed: 2
