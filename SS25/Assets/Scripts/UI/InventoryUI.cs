@@ -40,7 +40,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    void Refresh()
+    public void Refresh()
     {
         if(slots.Count == player.inventory.slots.Count)
         {
@@ -60,7 +60,14 @@ public class InventoryUI : MonoBehaviour
 
     public void Remove(int slotID)
     {
-        player.inventory.Remove(slotID);
-        Refresh();
+        Collectable itemToDrop = GameManager.instance.itemManager.GetItemByType(
+            player.inventory.slots[slotID].type);
+
+        if (itemToDrop != null)
+        {
+            player.DropItem(itemToDrop);
+            player.inventory.Remove(slotID);
+            Refresh();
+        }
     }
 }

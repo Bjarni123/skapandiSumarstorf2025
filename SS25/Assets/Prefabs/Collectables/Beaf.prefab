@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3814102474556387077}
   - component: {fileID: -726078038798340888}
   - component: {fileID: 6460378541498810266}
+  - component: {fileID: 1028415714056966526}
   m_Layer: 0
   m_Name: Beaf
   m_TagString: Untagged
@@ -103,6 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   icon: {fileID: 21300000, guid: a41aa0cc5a713014ebb0bf8b19d75ce4, type: 3}
+  rb2d: {fileID: 0}
 --- !u!60 &6460378541498810266
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -188,3 +190,30 @@ PolygonCollider2D:
       - {x: 0.37841797, y: 0.3173828}
       - {x: 0.31671143, y: 0.3179016}
   m_UseDelaunayMesh: 0
+--- !u!50 &1028415714056966526
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995256346609758639}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 3
+  m_LinearDamping: 0.75
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

@@ -18,7 +18,7 @@ public class Inventory
         {
             type = CollectableType.NONE;
             count = 0;
-            maxAllowed = 10;
+            maxAllowed = 10; //10 Per Slot 
         }
 
         public bool CanAddItem()

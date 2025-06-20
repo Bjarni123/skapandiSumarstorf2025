@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2862123327013883780}
   - component: {fileID: 4121897351937615307}
   - component: {fileID: 5395692134120239073}
+  - component: {fileID: -5217619401050382478}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
@@ -103,6 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   icon: {fileID: 21300000, guid: 3a617492fad026744a536b7a69eb92f1, type: 3}
+  rb2d: {fileID: 0}
 --- !u!60 &5395692134120239073
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -186,3 +188,30 @@ PolygonCollider2D:
       - {x: 0.44207764, y: 0.060150146}
       - {x: 0.4414673, y: 0.19158936}
   m_UseDelaunayMesh: 0
+--- !u!50 &-5217619401050382478
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349418143527132510}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 3
+  m_LinearDamping: 0.75
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
