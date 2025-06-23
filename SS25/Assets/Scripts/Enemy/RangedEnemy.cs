@@ -12,6 +12,7 @@ public class RangedEnemy : MonoBehaviour
     private float _lastFireTime;
 
     private Rigidbody2D rb;
+    public Transform FirePoint; // Changed from 'object' to 'Transform'
 
     void Start()
     {
@@ -48,15 +49,15 @@ public class RangedEnemy : MonoBehaviour
 
     void Shoot(Vector2 direction)
     {
-        // Create projectile
-        GameObject bullet = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectile = Instantiate(projectilePrefab, FirePoint.position, Quaternion.identity);
 
-        // Make sure it has a Rigidbody2D and move it
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.linearVelocity = direction * 10f; // Adjust projectile speed as needed
-        }
+        // Ignore collision with self (enemy)
+        Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+
+        // Shoot toward player
+        Vector2 shootDirection = (player.position - FirePoint.position).normalized;
+        Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
+        projectileRb.linearVelocity = shootDirection * 5f; // Updated to use velocity
     }
 
     void OnDrawGizmosSelected()
