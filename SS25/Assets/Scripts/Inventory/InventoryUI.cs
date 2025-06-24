@@ -20,7 +20,7 @@ public class InventoryUI : MonoBehaviour
 
     List<InventoryItemUI> listOfItemsUI = new List<InventoryItemUI>();
 
-    public Sprite image, image2;
+    public Sprite image;//, image2;
     public int quantity;
     public string title, description;
 
@@ -86,7 +86,7 @@ public class InventoryUI : MonoBehaviour
         itemDescription.ResetDescription();
 
         listOfItemsUI[0].SetData(image, quantity);
-        listOfItemsUI[1].SetData(image2, quantity);
+        //listOfItemsUI[1].SetData(image2, quantity);
     }
 
     public void Hide()
