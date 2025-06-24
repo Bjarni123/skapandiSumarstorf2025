@@ -20,7 +20,7 @@ public class PlayerAnimMovement : MonoBehaviour
 
     void Update()
     {
-        ProcessInputs();
+        ProcessMovementInputs();
         Animate();
         HandleFlip();
     }
@@ -37,8 +37,13 @@ public class PlayerAnimMovement : MonoBehaviour
         }
     }
     
-    void ProcessInputs()
+    private void ProcessMovementInputs()
     {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("AutoAttack"))
+        {
+            return;
+        }
+
         var kb = Keyboard.current;
         // read WASD or arrow keys
         float moveX = (kb.aKey.isPressed || kb.leftArrowKey.isPressed) ? -1f
@@ -50,15 +55,9 @@ public class PlayerAnimMovement : MonoBehaviour
 
         input = new Vector2(moveX, moveY).normalized;
 
-        if (input != Vector2.zero && !anim.GetCurrentAnimatorStateInfo(0).IsName("AutoAttack"))
+        if (input != Vector2.zero)
         {
             lastMoveDirection = input;
-        }
-
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            anim.SetBool("IsAttacking", true);
-            anim.SetTrigger("AutoAttack");
         }
 
     }
@@ -81,10 +80,5 @@ public class PlayerAnimMovement : MonoBehaviour
             transform.localScale = scale;
             facingRight = !facingRight;
         }
-    }
-
-    public void OnAttackFinished()
-    {
-        anim.SetBool("IsAttacking", false);
     }
 }

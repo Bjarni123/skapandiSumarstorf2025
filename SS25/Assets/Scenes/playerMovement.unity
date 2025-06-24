@@ -211,6 +211,7 @@ GameObject:
   - component: {fileID: 1529282593}
   - component: {fileID: 1529282596}
   - component: {fileID: 1529282597}
+  - component: {fileID: 1529282598}
   m_Layer: 0
   m_Name: PlayerWithAnim
   m_TagString: Untagged
@@ -350,6 +351,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1529282598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529282592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2774354d293fe9f4aaec4bb0deddb5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combo:
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: 56fe879914ef0ba4abd370c4b3c16b97, type: 2}
 --- !u!1 &1812058592
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 1812058592}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.1, y: 0.06, z: 0}
   m_LocalScale: {x: 0.5817262, y: 0.5817262, z: 0.5817262}
   m_ConstrainProportionsScale: 0
   m_Children: []
