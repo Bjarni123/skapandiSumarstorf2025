@@ -10,7 +10,7 @@ public class RangedEnemy : MonoBehaviour
 
     public GameObject projectilePrefab;
     public float FireRate = 1f;
-    public float ReloadDuration = 1f; // NEW: pause duration after shooting
+    public float ReloadDuration = 2.5f;
 
     private float _lastFireTime;
     private bool _isReloading = false;
