@@ -22,16 +22,19 @@ public class PlayerAnimMovement : MonoBehaviour
     {
         ProcessInputs();
         Animate();
-
-        if (input.x < 0 && facingRight || input.x > 0 && !facingRight)
-        {
-            Flip();
-        }
+        HandleFlip();
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = input * speed;
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("AutoAttack"))
+        {
+            rb.linearVelocity = input * speed;
+        }
+        else
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
     }
     
     void ProcessInputs()
@@ -47,18 +50,17 @@ public class PlayerAnimMovement : MonoBehaviour
 
         input = new Vector2(moveX, moveY).normalized;
 
-        // float moveX = Input.GetAxisRaw("Horizontal");
-        // float moveY = Input.GetAxisRaw("Vertical");
-
-        if ((moveX != 0f && moveY != 0f) && (input.x != 0 || input.y != 0))
+        if (input != Vector2.zero && !anim.GetCurrentAnimatorStateInfo(0).IsName("AutoAttack"))
         {
             lastMoveDirection = input;
         }
 
-        // input.x = Input.GetAxisRaw("Horizontal");
-        // input.y = Input.GetAxisRaw("Vertical");
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            anim.SetBool("IsAttacking", true);
+            anim.SetTrigger("AutoAttack");
+        }
 
-        // input.Normalize();
     }
 
     void Animate()
@@ -70,11 +72,19 @@ public class PlayerAnimMovement : MonoBehaviour
         anim.SetFloat("LastMoveY", lastMoveDirection.y);
     }
 
-    void Flip()
+    void HandleFlip()
     {
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-        facingRight = !facingRight;
+        if (input.x < 0 && facingRight || input.x > 0 && !facingRight)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+            facingRight = !facingRight;
+        }
+    }
+
+    public void OnAttackFinished()
+    {
+        anim.SetBool("IsAttacking", false);
     }
 }
