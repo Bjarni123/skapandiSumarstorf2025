@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 244716796}
   - component: {fileID: 244716797}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RangedEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -258,6 +258,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2764973648454200524, guid: 4c6c89d7d4bbb0044ab8bceea1d41784, type: 3}
+      propertyPath: m_UseFullKinematicContacts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4330573307554149369, guid: 4c6c89d7d4bbb0044ab8bceea1d41784, type: 3}
       propertyPath: player
       value: 
@@ -265,6 +269,14 @@ PrefabInstance:
     - target: {fileID: 5633943427540558972, guid: 4c6c89d7d4bbb0044ab8bceea1d41784, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5633943427540558972, guid: 4c6c89d7d4bbb0044ab8bceea1d41784, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864374380462596260, guid: 4c6c89d7d4bbb0044ab8bceea1d41784, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -371,6 +383,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangedEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7186912280202208993, guid: 091a95fe3625616489fd5d5d3e22cc7c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7672789651923520255, guid: 091a95fe3625616489fd5d5d3e22cc7c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.86
@@ -411,6 +427,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8794155992276199764, guid: 091a95fe3625616489fd5d5d3e22cc7c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -432,9 +452,10 @@ GameObject:
   - component: {fileID: 1460217094}
   - component: {fileID: 1460217093}
   - component: {fileID: 1460217092}
+  - component: {fileID: 1460217099}
   - component: {fileID: 1460217097}
   - component: {fileID: 1460217098}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -471,7 +492,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -616,6 +637,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 100
   CurrentHealth: 0
+--- !u!58 &1460217099
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460217091}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.45
 --- !u!1001 &7521696068153007569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -626,11 +683,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4519214141612225411, guid: ba1ef071457a6e94fa60efdfc1bfc5cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.3
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 4519214141612225411, guid: ba1ef071457a6e94fa60efdfc1bfc5cd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.65
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4519214141612225411, guid: ba1ef071457a6e94fa60efdfc1bfc5cd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -667,6 +724,10 @@ PrefabInstance:
     - target: {fileID: 5406910342714083580, guid: ba1ef071457a6e94fa60efdfc1bfc5cd, type: 3}
       propertyPath: m_Name
       value: Background
+      objectReference: {fileID: 0}
+    - target: {fileID: 5406910342714083580, guid: ba1ef071457a6e94fa60efdfc1bfc5cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

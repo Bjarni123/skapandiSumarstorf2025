@@ -24,7 +24,7 @@ public class EnemyChase : MonoBehaviour
         Vector2 direction = (playerPos - enemyPos).normalized;
         float distance = Vector2.Distance(enemyPos, playerPos);
 
-        if (distance < DetectionRadius)
+        if (distance > GetComponent<EnemyAttack>().AttackRange && distance < DetectionRadius)
         {
             Vector2 newPosition = enemyPos + direction * MoveSpeed * Time.fixedDeltaTime;
             rb.MovePosition(newPosition);
@@ -36,6 +36,13 @@ public class EnemyChase : MonoBehaviour
                 scale.x = Mathf.Sign(direction.x) * Mathf.Abs(scale.x);
                 transform.localScale = scale;
             }
+        }
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player collided with enemy!");
         }
     }
 }

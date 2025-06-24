@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2764973648454200524}
   - component: {fileID: 1226652960208641025}
   - component: {fileID: 4330573307554149369}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CircleEnemy 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -184,6 +184,7 @@ MonoBehaviour:
   AttackRange: 1.5
   AttackCooldown: 1
   AttackDamage: 1
+  IsAttacking: 0
 --- !u!114 &4330573307554149369
 MonoBehaviour:
   m_ObjectHideFlags: 0
