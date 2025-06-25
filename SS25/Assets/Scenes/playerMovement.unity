@@ -642,10 +642,10 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 
 --- !u!4 &1812058594
+
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7501659829494390249, guid: fe94147e75631b843a4111048938fbc8, type: 3}
+  m_PrefabInstance: {fileID: 7634563081677405962}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1812058592}
   serializedVersion: 2
@@ -687,11 +687,6 @@ AudioListener:
 --- !u!20 &2071368277
 Camera:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071368275}
-  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -805,7 +800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4519214141612225411, guid: ba1ef071457a6e94fa60efdfc1bfc5cd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4519214141612225411, guid: ba1ef071457a6e94fa60efdfc1bfc5cd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -909,10 +904,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-
   - {fileID: 2071368278}
   - {fileID: 1812058594}
   - {fileID: 1396474485066353246}
   - {fileID: 642366113}
   - {fileID: 1529282595}
-
