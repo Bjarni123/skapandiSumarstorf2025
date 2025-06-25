@@ -10,7 +10,7 @@ using System.Collections.Generic;
  * 
  */
 
-public class PlayerAnimCombat : MonoBehaviour
+public class PlayerCombat : MonoBehaviour
 {
 
     Animator anim;
