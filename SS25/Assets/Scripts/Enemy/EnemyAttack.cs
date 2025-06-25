@@ -23,7 +23,6 @@ public class EnemyAttack : MonoBehaviour
             _lastAttackTime = Time.time;
         }
     }
-
     System.Collections.IEnumerator Attack()
     {
         IsAttacking = true;
@@ -35,7 +34,6 @@ public class EnemyAttack : MonoBehaviour
         {
             playerHealth.TakeDamage(AttackDamage);
         }
-
         // Wait a short time before allowing movement again
         yield return new WaitForSeconds(0.4f); // you can adjust this
         IsAttacking = false;

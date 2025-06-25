@@ -184,7 +184,6 @@ MonoBehaviour:
   AttackRange: 1.5
   AttackCooldown: 1
   AttackDamage: 1
-  IsAttacking: 0
 --- !u!114 &4330573307554149369
 MonoBehaviour:
   m_ObjectHideFlags: 0

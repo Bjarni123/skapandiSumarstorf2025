@@ -1,6 +1,13 @@
+using System.Runtime.Serialization;
+
 public enum MapFileTile
 {
-  None,
-  Grass,
-  Water,
+    [EnumMember(Value = "N")]
+    None,
+    [EnumMember(Value = "G")]
+    Grass,
+    [EnumMember(Value = "S")]
+    Sand,
+    [EnumMember(Value = "W")]
+    Water,
 }

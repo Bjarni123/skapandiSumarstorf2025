@@ -3,6 +3,7 @@ using UnityEngine;
 public class RangedEnemy : MonoBehaviour
 {
     public Transform player;
+
     public float MoveSpeed = 3f;
     public float DesiredDistance = 8f;
     public float RetreatDistance = 4f;
@@ -18,6 +19,7 @@ public class RangedEnemy : MonoBehaviour
     private Rigidbody2D rb;
     public Transform FirePoint;
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,7 +31,7 @@ public class RangedEnemy : MonoBehaviour
 
         Vector2 direction = (player.position - transform.position);
         float distance = direction.magnitude;
-
+        
         if (distance > DetectionRadius)
             return; // Do nothing if outside detection range
 
@@ -55,6 +57,7 @@ public class RangedEnemy : MonoBehaviour
                     _lastFireTime = Time.time;
                     StartCoroutine(ReloadPause());
                 }
+
             }
         }
     }
@@ -95,7 +98,7 @@ public class RangedEnemy : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, DesiredDistance);
-
+        
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, RetreatDistance);
     }
