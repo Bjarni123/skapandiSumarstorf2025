@@ -1092,7 +1092,6 @@ GameObject:
   - component: {fileID: 1897267105}
   - component: {fileID: 1897267104}
   - component: {fileID: 1897267103}
-  - component: {fileID: 1897267108}
   - component: {fileID: 1897267109}
   m_Layer: 0
   m_Name: Player
@@ -1247,18 +1246,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1897267108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1897267102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8448e1e929ad4443b10e9052fcdd838, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1897267109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1272,7 +1259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 502370959}
-  inventorySize: 10
+  inventoryData: {fileID: 11400000, guid: 5b8f05a9862cc3f4b84c1f0204adf7f7, type: 2}
 --- !u!4 &1927384413 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4453550671911340014, guid: 3cd5f47d0e189eb46ab4a8e08587177d, type: 3}

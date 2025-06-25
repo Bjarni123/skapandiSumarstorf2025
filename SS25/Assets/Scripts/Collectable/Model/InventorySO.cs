@@ -1,5 +1,4 @@
 using System;
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +9,9 @@ public class InventorySO : ScriptableObject
     private List<InventoryItem> inventoryItems;
 
     [field: SerializeField]
-    public int Size { get; private set; } = 10;
+    public int Size { get; private set; } = 24;
 
-    public void Awake()
+    public void Initialize()
     {
         inventoryItems = new List<InventoryItem>();
         for (int i = 0; i < Size; i++)
@@ -41,19 +40,25 @@ public class InventorySO : ScriptableObject
         Dictionary<int, InventoryItem> returnValue = new Dictionary<int, InventoryItem>();
         for (int i = 0; i < inventoryItems.Count; i++)
         {
-            if (!inventoryItems[i].IsEmpty)
+            if (inventoryItems[i].IsEmpty)
                 continue;
             returnValue[i] = inventoryItems[i];
         }
         return returnValue;
     }
+
+    public InventoryItem GetItemAt(int itemIndex)
+    {
+        return inventoryItems[itemIndex];
+    }
 }
 
-[SerializeField]
+[Serializable]
 public struct InventoryItem
 {
-    public ItemSO item;
     public int quantity;
+    public ItemSO item;
+    
     public bool IsEmpty => item == null;
 
     public InventoryItem ChangeQuantity(int newQuantity)
