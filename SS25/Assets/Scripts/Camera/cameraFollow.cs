@@ -12,7 +12,15 @@ public class cameraScript : MonoBehaviour
 
     void LateUpdate()
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            GameObject playersObject = GameObject.Find("Players");
+            if (playersObject != null && playersObject.transform.childCount > 0)
+            {
+                target = playersObject.transform.GetChild(0);
+            }
+            else { return; }
+        }
 
         Vector3 desiredPos = target.position + offset;
         Vector3 smoothedPos = Vector3.Lerp(transform.position, desiredPos, smoothSpeed);

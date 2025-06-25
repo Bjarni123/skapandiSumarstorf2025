@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -10,4 +11,6 @@ public class EnemyController : MonoBehaviour
         health -= damageAmount;
         if (health <= 0) Destroy(gameObject);
     }
+
+
 }
