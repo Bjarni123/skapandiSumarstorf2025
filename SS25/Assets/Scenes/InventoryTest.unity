@@ -1639,6 +1639,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 169215228709374212, guid: 12ff1fd527fe54b459373290a288f165, type: 3}
+      propertyPath: image2
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a617492fad026744a536b7a69eb92f1, type: 3}
+    - target: {fileID: 169215228709374212, guid: 12ff1fd527fe54b459373290a288f165, type: 3}
       propertyPath: mouseFollower
       value: 
       objectReference: {fileID: 931413089}
