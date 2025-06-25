@@ -1,60 +1,89 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;    // new Input System
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
+
 
 /*
+ * It is possible to switch direction mid combo, Good to decide if that's a feature we would like
+ * 
+ * 
+ */
 
-This is now a script on the sword1 weapon, could be useful to rename this in the future. can't be bothered with it rn
-
-*/
-
-public class PlayerCombat : MonoBehaviour
+public class PlayerAnimCombat : MonoBehaviour
 {
-    [Header("Attack Settings")]
-    public GameObject attackPrefab;
-    public float cooldown = 0.5f;
-    public float spawnOffset = 1f;
-    public Transform swordObj;
+
+    Animator anim;
 
 
-    [Header("Animation")]
-    public Animator weaponAnimator;
+    // These are experimental, their definition is not perfectly defined, adjusting needed when combat system is fully implemented
+    [SerializeField] float comboCD = 0.2f;
+    [SerializeField] float attackCD = 0.5f;
+    [SerializeField] float nextComboAttackDelay = 0.6f;
 
-    Camera cam;
-    float nextAttackTime = 0f;
 
-     
-    void Awake()
+    public List<AttackSO> combo;
+    float lastClickedTime;
+    float lastComboEnd;
+    int comboCounter;
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
-        cam = Camera.main;
+        anim = GetComponent<Animator>();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        // Left-click
-        if (Mouse.current.leftButton.wasPressedThisFrame && Time.time >= nextAttackTime)
+        ProcessCombatInputs();
+        ExitAttack();
+    }
+
+    private void ProcessCombatInputs()
+    {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            nextAttackTime = Time.time + cooldown;
-            // autoAttack();
-            weaponAnimator.SetTrigger("AutoAttack");
+            Attack();
         }
     }
 
-    void SpawnHitbox()
+    void Attack()
     {
-        // 1) World-space mouse position (at pivot’s Z)
-        Vector2 mouseScreen = Mouse.current.position.ReadValue();
-        Vector3 mouseWorld = cam.ScreenToWorldPoint(new Vector3(mouseScreen.x, mouseScreen.y, swordObj.position.z));
+        if (Time.time - lastComboEnd > comboCD && comboCounter <= combo.Count)
+        {
+            Debug.Log(comboCounter);
+            CancelInvoke("EndCombo");
 
-        // 2) Aim direction from the pivot
-        Vector3 dir = (mouseWorld - swordObj.position).normalized;
-        if (dir == Vector3.zero) dir = Vector3.right;
+            if (Time.time - lastClickedTime >= attackCD)
+            {
+                anim.runtimeAnimatorController = combo[comboCounter].animatorOV;
+                anim.Play("AutoAttack", 0, 0);
+                comboCounter++;
+                lastClickedTime = Time.time;
 
-        // 3) Instantiate *under* the pivot so it moves with it
-        var swish = Instantiate(attackPrefab, swordObj);
 
-        // 4) Place it at the correct local offset & rotate
-        swish.transform.localPosition = new Vector3();
-        // float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        swish.transform.localRotation = Quaternion.Euler(0, 0, transform.rotation.z + 80);
+                if (comboCounter >= combo.Count)
+                {
+                    comboCounter = 0;
+                }
+            }
+
+        }
+    }
+
+    void ExitAttack()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9 && anim.GetCurrentAnimatorStateInfo(0).IsTag("AutoAttack"))
+        {
+            Invoke("EndCombo", nextComboAttackDelay);
+        }
+    }
+
+    void EndCombo()
+    {
+        comboCounter = 0;
+        lastComboEnd = Time.time;
     }
 }
