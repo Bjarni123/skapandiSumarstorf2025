@@ -363,6 +363,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2774354d293fe9f4aaec4bb0deddb5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  comboCD: 0.2
+  attackCD: 0.5
+  nextComboAttackDelay: 0.6
   combo:
   - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
   - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}

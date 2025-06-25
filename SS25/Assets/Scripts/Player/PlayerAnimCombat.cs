@@ -3,10 +3,24 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
+
+/*
+ * It is possible to switch direction mid combo, Good to decide if that's a feature we would like
+ * 
+ * 
+ */
+
 public class PlayerAnimCombat : MonoBehaviour
 {
 
     Animator anim;
+
+
+    // These are experimental, their definition is not perfectly defined, adjusting needed when combat system is fully implemented
+    [SerializeField] float comboCD = 0.2f;
+    [SerializeField] float attackCD = 0.5f;
+    [SerializeField] float nextComboAttackDelay = 0.6f;
+
 
     public List<AttackSO> combo;
     float lastClickedTime;
@@ -24,6 +38,7 @@ public class PlayerAnimCombat : MonoBehaviour
     void Update()
     {
         ProcessCombatInputs();
+        ExitAttack();
     }
 
     private void ProcessCombatInputs()
@@ -32,23 +47,16 @@ public class PlayerAnimCombat : MonoBehaviour
         {
             Attack();
         }
-        ExitAttack();
-    }
-
-    public void OnAttackFinished()
-    {
-        // not used rn
-        // anim.SetBool("IsAttacking", false);
-        // Debug.Log("OnAttackFinished");
     }
 
     void Attack()
     {
-        if (Time.time - lastComboEnd > 0.5f && comboCounter <= combo.Count)
+        if (Time.time - lastComboEnd > comboCD && comboCounter <= combo.Count)
         {
+            Debug.Log(comboCounter);
             CancelInvoke("EndCombo");
 
-            if (Time.time - lastClickedTime >= 0.2f)
+            if (Time.time - lastClickedTime >= attackCD)
             {
                 anim.runtimeAnimatorController = combo[comboCounter].animatorOV;
                 anim.Play("AutoAttack", 0, 0);
@@ -63,19 +71,13 @@ public class PlayerAnimCombat : MonoBehaviour
             }
 
         }
-
-        /*if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            anim.SetTrigger("AutoAttack");
-            anim.SetBool("IsAttacking", true);
-        }*/
     }
 
     void ExitAttack()
     {
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9 && anim.GetCurrentAnimatorStateInfo(0).IsTag("AutoAttack"))
         {
-            Invoke("EndCombo", 1);
+            Invoke("EndCombo", nextComboAttackDelay);
         }
     }
 
