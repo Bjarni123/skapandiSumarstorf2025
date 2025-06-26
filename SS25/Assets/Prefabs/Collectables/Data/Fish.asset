@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb5776301fa7dd64085e4902b2799618, type: 3}
+  m_Script: {fileID: 11500000, guid: ed3d136b184e63b419941c46f4976a47, type: 3}
   m_Name: Fish
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 1
   <MaxStackSize>k__BackingField: 10
   <Name>k__BackingField: Fish
-  <Description>k__BackingField: It smells
+  <Description>k__BackingField: It stinks but restores health
   <ItemImage>k__BackingField: {fileID: 21300000, guid: 3a617492fad026744a536b7a69eb92f1, type: 3}
+  <DefaultParametersList>k__BackingField: []
+  modifiersData: []
