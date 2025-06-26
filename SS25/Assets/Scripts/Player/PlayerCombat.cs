@@ -1,42 +1,89 @@
+using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.InputSystem;    // new Input System
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
+
+
+/*
+ * It is possible to switch direction mid combo, Good to decide if that's a feature we would like
+ * 
+ * 
+ */
 
 public class PlayerCombat : MonoBehaviour
 {
-    [Header("Attack Settings")]
-    public GameObject attackPrefab;
-    public float cooldown = 0.5f;
-    public float swordSwishSpawnOffset = 1f;
+
+    Animator anim;
 
 
-    float nextAttackTime = 0f;
+    // These are experimental, their definition is not perfectly defined, adjusting needed when combat system is fully implemented
+    [SerializeField] float comboCD = 0.2f;
+    [SerializeField] float attackCD = 0.5f;
+    [SerializeField] float nextComboAttackDelay = 0.6f;
 
+
+    public List<AttackSO> combo;
+    float lastClickedTime;
+    float lastComboEnd;
+    int comboCounter;
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
     void Update()
     {
-        // Left-click
-        if (Mouse.current.leftButton.wasPressedThisFrame && Time.time >= nextAttackTime)
+        ProcessCombatInputs();
+        ExitAttack();
+    }
+
+    private void ProcessCombatInputs()
+    {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            nextAttackTime = Time.time + cooldown;
-            autoAttack();
+            Attack();
         }
     }
 
-    void autoAttack()
+    void Attack()
     {
-        // 1. Mouse world position
-        Vector3 mouseScreen = Mouse.current.position.ReadValue();
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
-        mouseWorld.z = 0f;
+        if (Time.time - lastComboEnd > comboCD && comboCounter <= combo.Count)
+        {
+            Debug.Log(comboCounter);
+            CancelInvoke("EndCombo");
 
-        // 2. Direction vector
-        Vector3 dir = (mouseWorld - transform.position).normalized;
+            if (Time.time - lastClickedTime >= attackCD)
+            {
+                anim.runtimeAnimatorController = combo[comboCounter].animatorOV;
+                anim.Play("AutoAttack", 0, 0);
+                comboCounter++;
+                lastClickedTime = Time.time;
 
-        // 3. Calculate spawn position
-        Vector3 spawnPos = transform.position + dir * swordSwishSpawnOffset;
 
-        // 4. Instantiate and rotate
-        GameObject swish = Instantiate(attackPrefab, spawnPos, Quaternion.identity);
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        swish.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+                if (comboCounter >= combo.Count)
+                {
+                    comboCounter = 0;
+                }
+            }
+
+        }
+    }
+
+    void ExitAttack()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9 && anim.GetCurrentAnimatorStateInfo(0).IsTag("AutoAttack"))
+        {
+            Invoke("EndCombo", nextComboAttackDelay);
+        }
+    }
+
+    void EndCombo()
+    {
+        comboCounter = 0;
+        lastComboEnd = Time.time;
     }
 }
