@@ -34,3 +34,19 @@ jobs:
         with:
           projectPath: SS25
           targetPlatform: StandaloneWindows64
+
+      - name: Notify Development
+        if: github.ref == 'refs/heads/main'
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          args: "## ${{ github.event.head_commit.message }}\nDeployed to the Steam development branch!"
+
+      - name: Notify Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          args: "## ${{ github.event.head_commit.message }}\nDeployed to the Steam!"
