@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class MapLoader 
+public static class MapLoader
 {
     public static MapFile File { get; private set; }
     public static MapTilesLoader TilesLoader { get; set; }
@@ -11,14 +10,26 @@ public static class MapLoader
     public static MapMonstersLoader MonstersLoader { get; set; }
     public static MapPlayersLoader PlayersLoader { get; set; }
 
-    static MapLoader() {
+    static MapLoader()
+    {
         var jsonFile = Resources.Load<TextAsset>($"Maps/Example");
-        File = JsonConvert.DeserializeObject<MapFile>(jsonFile.text);
+        File = new MapFile(JsonConvert.DeserializeObject<MapFileRaw>(jsonFile.text));
     }
-    
-    public static void Load(string json) {
+
+    public static void Load(string json)
+    {
         var jsonFile = Resources.Load<TextAsset>($"Maps/{json}");
-        File = JsonConvert.DeserializeObject<MapFile>(jsonFile.text);
+        File = new MapFile(JsonConvert.DeserializeObject<MapFileRaw>(jsonFile.text));
         SceneManager.LoadScene("Scene/Map");
+    }
+
+    public static MapFile Save()
+    {
+        var file = new MapFile();
+        TilesLoader.Save(file);
+        ObjectsLoader.Save(file);
+        MonstersLoader.Save(file);
+        PlayersLoader.Save(file);
+        return file;
     }
 }
