@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class MapTileLoader : MonoBehaviour
 {
-    public MapFileTile Tile { get; set; }
+    public GameMapTile Tile { get; set; }
 
     public void Start()
     {
         switch (Tile)
         {
-            case MapFileTile.Grass:
+            case GameMapTile.Grass:
                 Instantiate(Resources.Load<GameObject>("Tiles/Grass"), transform);
                 break;
-            case MapFileTile.Sand:
+            case GameMapTile.Sand:
                 Instantiate(Resources.Load<GameObject>("Tiles/Sand"), transform);
                 break;
-            case MapFileTile.Water:
+            case GameMapTile.Water:
                 Instantiate(Resources.Load<GameObject>("Tiles/Water"), transform);
                 break;
             default:
@@ -24,7 +24,7 @@ public class MapTileLoader : MonoBehaviour
         }
     }
 
-    public MapFileTile Save()
+    public GameMapTile Save()
     {
         return Tile;
     }
