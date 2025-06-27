@@ -8,7 +8,7 @@ public static class GameMap
     public static int Width { get => texture.width; }
     public static int Height { get => texture.height; }
 
-    public delegate void MapChunkOnChange(int x, int y);
+    public delegate void MapChunkOnChange(Vector2Int index);
     private static MapChunkOnChange onChange;
 
     public static GameMapTile GetTile(int x, int y)
