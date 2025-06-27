@@ -1,37 +1,53 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float speed = 5f;
+
+    [Header("Rolling Settings")]
+    public float rollSpeed = 50f;
+    public float rollCooldown = 1f;
+
+    private float lastRollTimer;
+
     Rigidbody2D rb;
+    Animator anim;
 
     private Vector2 input;
-
-    Animator anim;
     private Vector2 lastMoveDirection;
+
     private bool facingRight = true;
 
+
+    private PlayerStateManager playerStateManager;
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
+        playerStateManager = GetComponent<PlayerStateManager>();
     }
 
     void Update()
     {
-        ProcessMovementInputs();
+        if (!playerStateManager.IsPerformingAction())
+        {
+            ProcessMovementInputs();
+        }
         Animate();
         HandleFlip();
     }
 
     private void FixedUpdate()
     {
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("AutoAttack"))
+        if (!playerStateManager.IsPerformingAction())
         {
             rb.linearVelocity = input * speed;
         }
-        else
+        else if (playerStateManager.IsPerformingAttack())
         {
             rb.linearVelocity = Vector2.zero;
         }
@@ -39,10 +55,13 @@ public class PlayerMovement : MonoBehaviour
     
     private void ProcessMovementInputs()
     {
+        
+        /* 
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("AutoAttack"))
         {
             return;
         }
+        */
 
         var kb = Keyboard.current;
         // read WASD or arrow keys
@@ -57,9 +76,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (input != Vector2.zero)
         {
-            lastMoveDirection = input;
+            if (kb.leftShiftKey.isPressed && (Time.time - lastRollTimer >= rollCooldown)  )
+            {
+                StartRoll();
+            } else {
+                lastMoveDirection = input;
+            }
         }
-
     }
 
     void Animate()
@@ -80,5 +103,12 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = scale;
             facingRight = !facingRight;
         }
+    }
+
+    void StartRoll()
+    {
+        anim.Play("PlayerRoll_Temp", 0, 0);
+        rb.linearVelocity = input * rollSpeed;
+        lastRollTimer = Time.time;
     }
 }

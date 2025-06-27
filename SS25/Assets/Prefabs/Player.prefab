@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 907108188417564804}
   - component: {fileID: 1737002558109887296}
   - component: {fileID: 1957573934137925374}
+  - component: {fileID: 5588490971086801436}
+  - component: {fileID: 5034332890280515600}
+  - component: {fileID: 4912907761014652103}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -135,9 +138,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_Interpolate: 2
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &1957573934137925374
 MonoBehaviour:
@@ -152,4 +155,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-
+  rollSpeed: 12
+  rollCooldown: 1
+--- !u!114 &5588490971086801436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867674701766975658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2774354d293fe9f4aaec4bb0deddb5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comboCD: 0.2
+  attackCD: 0.5
+  nextComboAttackDelay: 0.6
+  combo:
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: 56fe879914ef0ba4abd370c4b3c16b97, type: 2}
+--- !u!114 &5034332890280515600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867674701766975658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2774354d293fe9f4aaec4bb0deddb5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comboCD: 0.2
+  attackCD: 0.5
+  nextComboAttackDelay: 0.6
+  combo:
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: 56fe879914ef0ba4abd370c4b3c16b97, type: 2}
+--- !u!114 &4912907761014652103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867674701766975658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2575b2c205d794e46b5809649b2e6b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
