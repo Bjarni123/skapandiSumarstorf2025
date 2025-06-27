@@ -69,7 +69,6 @@ public class PlayerCombat : MonoBehaviour
                     comboCounter = 0;
                 }
             }
-
         }
     }
 

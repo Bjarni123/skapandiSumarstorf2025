@@ -3,13 +3,20 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float speed = 5f;
+    public float rollSpeed = 12f;
+    public float rollDuration = 0.4f;
+    public float rollCooldown = 1f;
+
+
+
     Rigidbody2D rb;
+    Animator anim;
 
     private Vector2 input;
-
-    Animator anim;
     private Vector2 lastMoveDirection;
+
     private bool facingRight = true;
 
     void Start()
