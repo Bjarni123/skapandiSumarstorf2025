@@ -84,7 +84,8 @@ namespace Inventory.UI
 
         public void OnDrag(PointerEventData eventData)
         {
-            throw new NotImplementedException();
+            if (empty)
+                return;
         }
     }
 }
