@@ -14,10 +14,8 @@ GameObject:
   - component: {fileID: 1737002558109887296}
   - component: {fileID: 1957573934137925374}
   - component: {fileID: 5588490971086801436}
-  - component: {fileID: 1147768138054219897}
-  - component: {fileID: 4391348466395222823}
-  - component: {fileID: 1330261469132657541}
-  - component: {fileID: 2589496195222858464}
+  - component: {fileID: 5034332890280515600}
+  - component: {fileID: 4912907761014652103}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -158,7 +156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   rollSpeed: 12
-  rollDuration: 0.4
   rollCooldown: 1
 --- !u!114 &5588490971086801436
 MonoBehaviour:
@@ -181,7 +178,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
   - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
   - {fileID: 11400000, guid: 56fe879914ef0ba4abd370c4b3c16b97, type: 2}
---- !u!114 &1147768138054219897
+--- !u!114 &5034332890280515600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,15 +187,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4867674701766975658}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af383789cf3a536429a9c1e6cda29ab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 2774354d293fe9f4aaec4bb0deddb5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryUI: {fileID: 0}
-  inventoryData: {fileID: 11400000, guid: 5b8f05a9862cc3f4b84c1f0204adf7f7, type: 2}
-  initialItems: []
-  dropClip: {fileID: 0}
-  audioSource: {fileID: 0}
---- !u!114 &4391348466395222823
+  comboCD: 0.2
+  attackCD: 0.5
+  nextComboAttackDelay: 0.6
+  combo:
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
+  - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
+  - {fileID: 11400000, guid: 56fe879914ef0ba4abd370c4b3c16b97, type: 2}
+--- !u!114 &4912907761014652103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -207,71 +208,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4867674701766975658}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcec99890774e4d4e82b509b3b71a714, type: 3}
+  m_Script: {fileID: 11500000, guid: 2575b2c205d794e46b5809649b2e6b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryData: {fileID: 11400000, guid: 5b8f05a9862cc3f4b84c1f0204adf7f7, type: 2}
---- !u!114 &1330261469132657541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4867674701766975658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b06c9166856f244d8cda77e0fd17de0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
-  inventoryData: {fileID: 11400000, guid: 5b8f05a9862cc3f4b84c1f0204adf7f7, type: 2}
-  parametersToModify:
-  - itemParameter: {fileID: 11400000, guid: 380b2e6d130d4ae42b07c6b1d2fbb5be, type: 2}
-    value: -10
-  itemCurrentState: []
---- !u!61 &2589496195222858464
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4867674701766975658}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.000000044703484, y: -0.2276276}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.9375, y: 1.4375}
-    newSize: {x: 0.9375, y: 1.4375}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.62732625, y: 0.60203177}
-  m_EdgeRadius: 0

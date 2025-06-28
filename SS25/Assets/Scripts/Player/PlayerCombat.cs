@@ -27,6 +27,17 @@ public class PlayerCombat : MonoBehaviour
     float lastComboEnd;
     int comboCounter;
 
+    private PlayerStateManager playerStateManager;
+
+    private void Awake()
+    {
+        playerStateManager = GetComponent<PlayerStateManager>();
+        if (playerStateManager == null)
+        {
+            Debug.LogError("PlayerStateManager component not found on the GameObject.");
+        }
+    }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,7 +48,10 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessCombatInputs();
+        if (!playerStateManager.IsPerformingAction())
+        {
+            ProcessCombatInputs();    
+        }
         ExitAttack();
     }
 

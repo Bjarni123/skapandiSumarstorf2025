@@ -5,15 +5,15 @@ using UnityEngine;
 public static class GameMap
 {
     private static Texture2D texture;
-    public static int Width { get => texture.width; }
-    public static int Height { get => texture.height; }
+    public static int Width { get => texture.width / 4; }
+    public static int Height { get => texture.height / 4; }
 
-    public delegate void MapChunkOnChange(int x, int y);
+    public delegate void MapChunkOnChange(Vector2Int index);
     private static MapChunkOnChange onChange;
 
     public static GameMapTile GetTile(int x, int y)
     {
-        Color pixelColor = texture.GetPixel(x, y);
+        Color pixelColor = texture.GetPixel(x * 4, y * 4);
         int r = (int)(pixelColor.r * 255);
         int g = (int)(pixelColor.g * 255);
         int b = (int)(pixelColor.b * 255);
@@ -54,7 +54,7 @@ public static class GameMap
     public static void Load(string path)
     {
         var fileData = File.ReadAllBytes($"{path}/Map.png");
-        texture = new Texture2D(2048, 2048);
+        texture = new Texture2D(0, 0);
         if (!texture.LoadImage(fileData))
         {
             throw new Exception();
