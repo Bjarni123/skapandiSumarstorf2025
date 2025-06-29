@@ -3,7 +3,7 @@ name: SS25
 on:
   push:
     branches:
-      - steam-ci
+      - main
 
 jobs:
   linux:
