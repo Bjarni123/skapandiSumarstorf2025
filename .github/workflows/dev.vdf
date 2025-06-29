@@ -1,0 +1,14 @@
+"AppBuild"
+{
+	"AppID" "3849650"
+	"Desc" "Ís Pixel"
+	"SetLive" "development"
+	"ContentRoot" "..\..\release"
+	"BuildOutput" "..\..\output"
+	"Depots"
+	{
+		"3849654" "depots\linux\depot.vdf"
+		"3849653" "depots\macos\depot.vdf"
+		"3849652" "depots\windows\depot.vdf"
+	}
+}

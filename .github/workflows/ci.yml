@@ -3,9 +3,7 @@ name: SS25
 on:
   push:
     branches:
-      - main
-    tags:
-      - 'v*.*.*'
+      - steam-ci
 
 jobs:
   build:
@@ -25,7 +23,27 @@ jobs:
           restore-keys: |
             Library-
 
-      - name: Build
+      - name: Build Linux
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: SS25
+          targetPlatform: StandaloneLinux64
+
+      - name: Build MacOS
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: SS25
+          targetPlatform: StandaloneOSX
+
+      - name: Build Windows
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -35,18 +53,26 @@ jobs:
           projectPath: SS25
           targetPlatform: StandaloneWindows64
 
-      - name: Notify Development
-        if: github.ref == 'refs/heads/main'
+      - name: Login
+        env:
+          AWS_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          ./.github/bin/cli steam login --username="${{ secrets.STEAM_USERNAME }}" --password="${{ secrets.STEAM_PASSWORD }}"
+
+      - name: Debug
+        run: |
+          find .
+          exit 1
+
+      - name: Publish
+        run: |
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build $(pwd)/.github/workflows/dev.vdf +quit
+
+      - name: Notify
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: "## ${{ github.event.head_commit.message }}\nDeployed to the Steam development branch!"
-
-      - name: Notify Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: Ilshidur/action-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        with:
-          args: "## ${{ github.event.head_commit.message }}\nDeployed to the Steam!"

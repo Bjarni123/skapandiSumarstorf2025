@@ -1,0 +1,13 @@
+"DepotBuild"
+{
+	"DepotID" "3849654"
+
+	"ContentRoot" ".\linux"
+
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"Recursive" "1"
+	}
+}
