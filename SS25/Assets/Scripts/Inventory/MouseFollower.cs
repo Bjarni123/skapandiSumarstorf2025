@@ -11,8 +11,7 @@ public class MouseFollower : MonoBehaviour
 
     [SerializeField]
     private InventoryItemUI item;
-
-   
+       
     public void Awake()
     {
         canvas = transform.root.GetComponent<Canvas>();
