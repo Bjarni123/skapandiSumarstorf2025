@@ -6,7 +6,7 @@ on:
       - steam-ci
 
 jobs:
-  build:
+  linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,9 +21,9 @@ jobs:
           path: SS25/Library
           key: Library-${{ hashFiles('SS25/Assets/**', 'SS25/Packages/**', 'SS25/ProjectSettings/**') }}
           restore-keys: |
-            Library-
+            Library-Linux-
 
-      - name: Build Linux
+      - name: Build
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -32,8 +32,32 @@ jobs:
         with:
           projectPath: SS25
           targetPlatform: StandaloneLinux64
+          buildProfile: "SS25/Assets/Settings/Build Profiles/Linux.asset"
 
-      - name: Build MacOS
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: build/
+
+  macos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: SS25/Library
+          key: Library-${{ hashFiles('SS25/Assets/**', 'SS25/Packages/**', 'SS25/ProjectSettings/**') }}
+          restore-keys: |
+            Library-MacOS-
+
+      - name: Build
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -42,8 +66,32 @@ jobs:
         with:
           projectPath: SS25
           targetPlatform: StandaloneOSX
+          buildProfile: "SS25/Assets/Settings/Build Profiles/MacOS.asset"
 
-      - name: Build Windows
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: build/
+
+  windows:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: SS25/Library
+          key: Library-${{ hashFiles('SS25/Assets/**', 'SS25/Packages/**', 'SS25/ProjectSettings/**') }}
+          restore-keys: |
+            Library-Windows-
+
+      - name: Build
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -52,6 +100,48 @@ jobs:
         with:
           projectPath: SS25
           targetPlatform: StandaloneWindows64
+          buildProfile: "SS25/Assets/Settings/Build Profiles/Windows.asset"
+
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: build/
+
+  publish:
+    needs: [linux, macos, windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup
+        run: |
+          mkdir -p release/linux
+          mkdir -p release/macos
+          mkdir -p release/windows
+
+      - name: Download Linux
+        uses: actions/download-artifact@v4
+        with:
+          name: linux
+          path: ./release/linux
+
+      - name: Download MacOS
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/download-artifact@v4
+        with:
+          name: macos
+          path: ./release/macos
+
+      - name: Download Windows
+        uses: actions/download-artifact@v4
+        with:
+          name: windows
+          path: ./release/windows
 
       - name: Login
         env:
@@ -60,11 +150,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           ./.github/bin/cli steam login --bucket="${{ secrets.AWS_BUCKET }}" --username="${{ secrets.STEAM_USERNAME }}" --password="${{ secrets.STEAM_PASSWORD }}"
-
-      - name: Debug
-        run: |
-          find .
-          exit 1
 
       - name: Publish
         run: |
