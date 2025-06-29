@@ -140,6 +140,9 @@ jobs:
           name: windows
           path: ./release/windows
 
+      - name: steamcmd
+        uses: CyberAndrii/setup-steamcmd@v1
+
       - name: Login
         env:
           AWS_REGION: eu-west-1
