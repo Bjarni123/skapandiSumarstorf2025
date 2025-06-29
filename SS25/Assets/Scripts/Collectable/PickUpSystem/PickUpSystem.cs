@@ -8,11 +8,9 @@ public class PickUpSystem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"Triggered by: {collision.gameObject.name}");
         Item item = collision.GetComponent<Item>();
         if (item != null)
         {
-            Debug.Log("Item found, attempting pickup.");
             int reminder = inventoryData.AddItem(item.InventoryItem, item.Quantity);
             if (reminder == 0)
                 item.DestroyItem();

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 namespace Inventory
 {
@@ -122,9 +123,27 @@ namespace Inventory
 
         private void DropItem(int itemIndex, int quantity)
         {
+            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            SpawnDroppedItem(inventoryItem.item, quantity);
+
             inventoryData.RemoveItem(itemIndex, quantity);
             inventoryUI.ResetSelection();
-            audioSource.PlayOneShot(dropClip);
+            // audioSource.PlayOneShot(dropClip);
+        }
+
+        private void SpawnDroppedItem(ItemSO item, int quantity)
+        {
+            Vector3 dropPosition = transform.position;
+            float randX = Random.value < 0.5f ? -1.5f : 1.5f;
+            float randY = Random.value < 0.5f ? -1.5f : 1.5f;
+
+            Vector3 spawnOffset = new Vector3(randX, randY, 0f).normalized * 1.5f;
+
+            GameObject droppedItem = Instantiate(item.WorldPrefab, dropPosition + spawnOffset, Quaternion.identity);
+
+            Item itemComponent = droppedItem.GetComponent<Item>();
+            itemComponent.Initialize(item, quantity);
+
         }
 
         public void PerformAction(int itemIndex)
@@ -143,7 +162,7 @@ namespace Inventory
             if (itemAction != null)
             {
                 itemAction.PerformAction(gameObject, inventoryItem.itemState);
-                audioSource.PlayOneShot(itemAction.actionSFX);
+                // audioSource.PlayOneShot(itemAction.actionSFX);
                 if (inventoryData.GetItemAt(itemIndex).IsEmpty)
                 {
                     inventoryUI.ResetSelection();
