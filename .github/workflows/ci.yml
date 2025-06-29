@@ -3,7 +3,7 @@ name: SS25
 on:
   push:
     branches:
-      - main
+      - steam-ci
 
 jobs:
   linux:
@@ -32,7 +32,6 @@ jobs:
         with:
           projectPath: SS25
           targetPlatform: StandaloneLinux64
-          buildProfile: "SS25/Assets/Settings/Build Profiles/Linux.asset"
 
       - name: Archive
         uses: actions/upload-artifact@v4
@@ -66,7 +65,6 @@ jobs:
         with:
           projectPath: SS25
           targetPlatform: StandaloneOSX
-          buildProfile: "SS25/Assets/Settings/Build Profiles/MacOS.asset"
 
       - name: Archive
         uses: actions/upload-artifact@v4
@@ -100,7 +98,6 @@ jobs:
         with:
           projectPath: SS25
           targetPlatform: StandaloneWindows64
-          buildProfile: "SS25/Assets/Settings/Build Profiles/Windows.asset"
 
       - name: Archive
         uses: actions/upload-artifact@v4
