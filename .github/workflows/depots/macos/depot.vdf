@@ -1,0 +1,13 @@
+"DepotBuild"
+{
+	"DepotID" "3849653"
+
+	"ContentRoot" ".\macos"
+
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"Recursive" "1"
+	}
+}
