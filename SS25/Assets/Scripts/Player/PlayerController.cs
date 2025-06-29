@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject Prefab;
+
     public void Start()
     {
         GamePlayer.Load(GameSave.Loaded);
         GameSave.Subscribe(OnSave);
 
-        GamePlayer.Player = Instantiate(Resources.Load<GameObject>("Player"), transform);
+        GamePlayer.Player = Instantiate(Prefab, transform);
         GamePlayer.Player.transform.position = new Vector3(GamePlayer.Position.x, GamePlayer.Position.y, -1);
     }
 
