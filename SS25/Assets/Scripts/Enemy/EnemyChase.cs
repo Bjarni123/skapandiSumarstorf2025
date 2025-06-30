@@ -11,12 +11,17 @@ public class EnemyChase : MonoBehaviour
 
     void Start()
     {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+
         rb = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
-        if (player == null || (GetComponent<EnemyAttack>().IsAttacking)) return;
+        if (GetComponent<EnemyAttack>().IsAttacking) return;
         Vector2 enemyPos = rb.position;
         Vector2 playerPos = player.position;
 

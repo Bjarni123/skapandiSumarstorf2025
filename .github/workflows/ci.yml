@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*.*.*'
 
 jobs:
-  build:
+  linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +21,73 @@ jobs:
           path: SS25/Library
           key: Library-${{ hashFiles('SS25/Assets/**', 'SS25/Packages/**', 'SS25/ProjectSettings/**') }}
           restore-keys: |
-            Library-
+            Library-Linux-
+
+      - name: Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: SS25
+          targetPlatform: StandaloneLinux64
+
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: build/
+
+  macos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: SS25/Library
+          key: Library-${{ hashFiles('SS25/Assets/**', 'SS25/Packages/**', 'SS25/ProjectSettings/**') }}
+          restore-keys: |
+            Library-MacOS-
+
+      - name: Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: SS25
+          targetPlatform: StandaloneOSX
+
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: build/
+
+  windows:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: SS25/Library
+          key: Library-${{ hashFiles('SS25/Assets/**', 'SS25/Packages/**', 'SS25/ProjectSettings/**') }}
+          restore-keys: |
+            Library-Windows-
 
       - name: Build
         uses: game-ci/unity-builder@v4
@@ -35,18 +99,65 @@ jobs:
           projectPath: SS25
           targetPlatform: StandaloneWindows64
 
-      - name: Notify Development
-        if: github.ref == 'refs/heads/main'
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: build/
+
+  publish:
+    needs: [linux, macos, windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup
+        run: |
+          mkdir -p release/linux
+          mkdir -p release/macos
+          mkdir -p release/windows
+
+      - name: Download Linux
+        uses: actions/download-artifact@v4
+        with:
+          name: linux
+          path: ./release/linux
+
+      - name: Download MacOS
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/download-artifact@v4
+        with:
+          name: macos
+          path: ./release/macos
+
+      - name: Download Windows
+        uses: actions/download-artifact@v4
+        with:
+          name: windows
+          path: ./release/windows
+
+      - name: steamcmd
+        uses: CyberAndrii/setup-steamcmd@v1
+
+      - name: Login
+        env:
+          AWS_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          ./.github/bin/cli steam login --bucket="${{ secrets.AWS_BUCKET }}" --username="${{ secrets.STEAM_USERNAME }}" --password="${{ secrets.STEAM_PASSWORD }}"
+
+      - name: Publish
+        run: |
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build $(pwd)/.github/workflows/dev.vdf +quit
+
+      - name: Notify
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: "## ${{ github.event.head_commit.message }}\nDeployed to the Steam development branch!"
-
-      - name: Notify Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: Ilshidur/action-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        with:
-          args: "## ${{ github.event.head_commit.message }}\nDeployed to the Steam!"
