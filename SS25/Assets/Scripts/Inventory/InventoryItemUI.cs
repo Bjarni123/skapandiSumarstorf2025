@@ -18,7 +18,8 @@ namespace Inventory.UI
         [SerializeField]
         private Image borderImage;
 
-        public event Action<InventoryItemUI> OnItemClicked, OnItemDroppedOn, OnItemBeginDrag, OnItemEndDrag, OnRightMouseBtnClick;
+        public event Action<InventoryItemUI> OnItemClicked, OnItemDroppedOn, OnItemBeginDrag, OnRightMouseBtnClick;
+        public event Action<InventoryItemUI, PointerEventData> OnItemEndDrag;
 
         private bool empty = true;
 
@@ -61,7 +62,7 @@ namespace Inventory.UI
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            OnItemEndDrag?.Invoke(this);
+            OnItemEndDrag?.Invoke(this, eventData);
         }
 
         public void OnPointerClick(PointerEventData pointerData)

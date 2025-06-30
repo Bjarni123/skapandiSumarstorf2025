@@ -60,7 +60,18 @@ namespace Inventory
             inventoryUI.OnSwapItems += HandleSwapItems;
             inventoryUI.OnStartDragging += HandleDragging;
             inventoryUI.OnItemActionRequested += HandleItemActionRequest;
+            inventoryUI.OnDropItemRequested += HandleDropItemRequest;
         }
+
+        private void HandleDropItemRequest(int itemIndex)
+        {
+            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            if (!inventoryItem.IsEmpty)
+            {
+                DropItem(itemIndex, inventoryItem.quantity);
+            }
+        }
+
         private void HandleDescriptionRequest(int itemIndex)
         {
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
@@ -116,9 +127,26 @@ namespace Inventory
             IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
             if (destroyableItem != null)
             {
-                inventoryUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
-            }
+                inventoryUI.SetActions(new List<(string, Action)>
+                {
+                    (itemAction.ActionName, () => PerformAction(itemIndex)),
+                    ("Drop", () => ShowDropOptions(itemIndex, inventoryItem.quantity))
+                });
 
+            }
+        }
+
+        private void ShowDropOptions(int itemIndex, int quantity)
+        {
+            inventoryUI.ClearActions();
+
+            inventoryUI.SetActions(new List<(string, Action)>
+            {
+                ("Drop 1", () => DropItem(itemIndex, 1)),
+                ("Drop All", () => DropItem(itemIndex, quantity))
+            });
+
+            inventoryUI.ShowItemAction(itemIndex);
         }
 
         private void DropItem(int itemIndex, int quantity)
