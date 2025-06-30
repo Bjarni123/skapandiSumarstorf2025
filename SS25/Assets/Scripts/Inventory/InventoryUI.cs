@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Inventory.UI
 {
@@ -19,7 +20,6 @@ namespace Inventory.UI
         [SerializeField]
         private MouseFollower mouseFollower;
 
-
         List<InventoryItemUI> listOfItemsUI = new List<InventoryItemUI>();
 
         public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
@@ -30,6 +30,12 @@ namespace Inventory.UI
 
         [SerializeField]
         private ItemActionPanel actionPanel;
+
+        [SerializeField]
+        private RectTransform inventoryPanelRect;
+
+        public event Action<int> OnDropItemRequested;
+
 
         private void Awake()
         {
@@ -126,8 +132,18 @@ namespace Inventory.UI
             OnStartDragging?.Invoke(index);
         }
 
-        private void HandleEndDrag(InventoryItemUI inventoryUIItem)
+        private void HandleEndDrag(InventoryItemUI inventoryUIItem, PointerEventData eventData)
         {
+            Vector2 mousePosition = eventData.position;
+
+            if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryPanelRect, mousePosition, eventData.enterEventCamera))
+            {
+                int index = listOfItemsUI.IndexOf(inventoryUIItem);
+                if (index != -1)
+                {
+                    OnDropItemRequested?.Invoke(index);
+                }
+            }
             ResetDraggedItem();
         }
 
@@ -158,6 +174,15 @@ namespace Inventory.UI
             actionPanel.AddButton(actionName, performAction);
         }
 
+        public void SetActions(List<(string, Action)> actions)
+        {
+            actionPanel.RemoveOldButtons();
+            foreach (var (name, callback) in actions)
+            {
+                actionPanel.AddButton(name, callback);
+            }
+        }
+
         public void ShowItemAction(int itemIndex)
         {
             actionPanel.Toggle(true);
@@ -171,6 +196,11 @@ namespace Inventory.UI
                 item.Deselect();
             }
             actionPanel.Toggle(false);
+        }
+
+        public void ClearActions()
+        {
+            actionPanel.ClearActions();
         }
 
         public void Hide()

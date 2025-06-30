@@ -18,8 +18,7 @@ namespace Inventory.UI
 
         public void Toggle(bool val)
         {
-            if (val == true)
-                RemoveOldButtons();
+            
             gameObject.SetActive(val);
         }
 
@@ -29,6 +28,11 @@ namespace Inventory.UI
             {
                 Destroy(transformChildObjects.gameObject);
             }
+        }
+
+        public void ClearActions()
+        {
+            RemoveOldButtons();
         }
     }
 }

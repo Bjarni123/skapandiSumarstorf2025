@@ -21,6 +21,14 @@ public class Item : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = InventoryItem.ItemImage;
     }
 
+    public void Initialize(ItemSO itemSO, int quantity)
+    {
+        InventoryItem = itemSO;
+        Quantity = quantity;
+        GetComponent<SpriteRenderer>().sprite = itemSO.ItemImage;
+    }
+
+
     public void DestroyItem()
     {
         GetComponent<Collider2D>().enabled = false;

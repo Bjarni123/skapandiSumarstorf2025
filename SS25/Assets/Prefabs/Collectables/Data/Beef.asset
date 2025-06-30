@@ -18,5 +18,6 @@ MonoBehaviour:
   <Description>k__BackingField: Yummy
   <ItemImage>k__BackingField: {fileID: 21300000, guid: a41aa0cc5a713014ebb0bf8b19d75ce4, type: 3}
   <DefaultParametersList>k__BackingField: []
+  <WorldPrefab>k__BackingField: {fileID: 4136833576026137408, guid: 77694bae2dab3394b8d452ecdd5fe6ea, type: 3}
   modifiersData: []
   <actionSFX>k__BackingField: {fileID: 0}
