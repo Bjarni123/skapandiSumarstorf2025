@@ -32,10 +32,9 @@ namespace Inventory.UI
         private ItemActionPanel actionPanel;
 
         [SerializeField]
-        private RectTransform inventoryPanelRect;
+        private RectTransform inventoryPanelRect1;
 
         public event Action<int> OnDropItemRequested;
-
 
         private void Awake()
         {
@@ -54,8 +53,7 @@ namespace Inventory.UI
             listOfItemsUI.Clear();
             for (int i = 0; i < inventorySize; i++)
             {
-                InventoryItemUI itemUI =
-                Instantiate(itemPrefab, Vector3.zero, Quaternion.identity);
+                InventoryItemUI itemUI = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity);
                 itemUI.transform.SetParent(contentPanel, false);
                 listOfItemsUI.Add(itemUI);
                 itemUI.OnItemClicked += HandleItemSelection;
@@ -136,7 +134,7 @@ namespace Inventory.UI
         {
             Vector2 mousePosition = eventData.position;
 
-            if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryPanelRect, mousePosition, eventData.enterEventCamera))
+            if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryPanelRect1, mousePosition, eventData.enterEventCamera))
             {
                 int index = listOfItemsUI.IndexOf(inventoryUIItem);
                 if (index != -1)
