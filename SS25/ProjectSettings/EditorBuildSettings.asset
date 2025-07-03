@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/BjarniDevelopment.unity
+    guid: e8539e9599d03004d9913b574e7e327f
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 7765353ad1a9c4458828efb716a39df7
