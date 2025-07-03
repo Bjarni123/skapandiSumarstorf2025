@@ -1,4 +1,6 @@
-/*using UnityEngine;
+using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Inventory.UI
 {
@@ -7,7 +9,7 @@ namespace Inventory.UI
         [SerializeField]
         private GameObject buttonPrefab;
 
-        public void AddButon(string name, Action onClickAction)
+        public void AddButton(string name, Action onClickAction)
         {
             GameObject button = Instantiate(buttonPrefab, transform);
             button.GetComponent<Button>().onClick.AddListener(() => onClickAction());
@@ -16,8 +18,7 @@ namespace Inventory.UI
 
         public void Toggle(bool val)
         {
-            if (val == true)
-                RemoveOldButtons();
+            
             gameObject.SetActive(val);
         }
 
@@ -28,5 +29,10 @@ namespace Inventory.UI
                 Destroy(transformChildObjects.gameObject);
             }
         }
+
+        public void ClearActions()
+        {
+            RemoveOldButtons();
+        }
     }
-}*/
+}

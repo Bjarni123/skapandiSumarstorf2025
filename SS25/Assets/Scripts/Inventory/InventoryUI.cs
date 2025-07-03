@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Inventory.UI
 {
@@ -19,7 +20,6 @@ namespace Inventory.UI
         [SerializeField]
         private MouseFollower mouseFollower;
 
-
         List<InventoryItemUI> listOfItemsUI = new List<InventoryItemUI>();
 
         public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
@@ -27,6 +27,16 @@ namespace Inventory.UI
         public event Action<int, int> OnSwapItems;
 
         private int currentlyDraggedItemIndex = -1;
+
+        [SerializeField]
+        private ItemActionPanel actionPanel;
+
+        [SerializeField]
+        private RectTransform inventoryPanelRect;
+
+        public event Action<int> OnDropItemRequested;
+
+
         private void Awake()
         {
             Hide();
@@ -98,7 +108,7 @@ namespace Inventory.UI
         private void HandleSwap(InventoryItemUI inventoryUIItem)
         {
             int index = listOfItemsUI.IndexOf(inventoryUIItem);
-            if (index == -1)
+            if (index < 0 || currentlyDraggedItemIndex < 0)
             {
                 return;
             }
@@ -122,8 +132,18 @@ namespace Inventory.UI
             OnStartDragging?.Invoke(index);
         }
 
-        private void HandleEndDrag(InventoryItemUI inventoryUIItem)
+        private void HandleEndDrag(InventoryItemUI inventoryUIItem, PointerEventData eventData)
         {
+            Vector2 mousePosition = eventData.position;
+
+            if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryPanelRect, mousePosition, eventData.enterEventCamera))
+            {
+                int index = listOfItemsUI.IndexOf(inventoryUIItem);
+                if (index != -1)
+                {
+                    OnDropItemRequested?.Invoke(index);
+                }
+            }
             ResetDraggedItem();
         }
 
@@ -149,16 +169,43 @@ namespace Inventory.UI
             DeselectAllItems();
         }
 
+        public void AddAction(string actionName, Action performAction)
+        {
+            actionPanel.AddButton(actionName, performAction);
+        }
+
+        public void SetActions(List<(string, Action)> actions)
+        {
+            actionPanel.RemoveOldButtons();
+            foreach (var (name, callback) in actions)
+            {
+                actionPanel.AddButton(name, callback);
+            }
+        }
+
+        public void ShowItemAction(int itemIndex)
+        {
+            actionPanel.Toggle(true);
+            actionPanel.transform.position = listOfItemsUI[itemIndex].transform.position;
+        }
+
         private void DeselectAllItems()
         {
             foreach (InventoryItemUI item in listOfItemsUI)
             {
                 item.Deselect();
             }
+            actionPanel.Toggle(false);
+        }
+
+        public void ClearActions()
+        {
+            actionPanel.ClearActions();
         }
 
         public void Hide()
         {
+            actionPanel.Toggle(false);
             gameObject.SetActive(false);
             ResetDraggedItem();
         }

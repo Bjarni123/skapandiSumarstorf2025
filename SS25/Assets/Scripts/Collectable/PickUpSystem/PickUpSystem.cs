@@ -17,5 +17,9 @@ public class PickUpSystem : MonoBehaviour
             else
                 item.Quantity = reminder;
         }
+        else
+        {
+            Debug.Log("No Item component found on collided object.");
+        }
     }
 }

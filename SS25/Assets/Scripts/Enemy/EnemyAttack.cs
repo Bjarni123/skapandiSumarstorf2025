@@ -10,11 +10,17 @@ public class EnemyAttack : MonoBehaviour
     [HideInInspector] public bool IsAttacking = false;
 
     private float _lastAttackTime;
-
+    
+    void Start()
+    {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+        _lastAttackTime = Time.time - AttackCooldown; // Allow immediate attack on start
+    }
     void Update()
     {
-        if (player == null) return;
-
         float distance = Vector2.Distance(transform.position, player.position);
 
         if (distance <= AttackRange && Time.time >= _lastAttackTime + AttackCooldown)
