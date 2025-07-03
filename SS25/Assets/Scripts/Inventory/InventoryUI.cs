@@ -36,7 +36,6 @@ namespace Inventory.UI
 
         public event Action<int> OnDropItemRequested;
 
-
         private void Awake()
         {
             Hide();
