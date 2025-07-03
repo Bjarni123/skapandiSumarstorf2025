@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af383789cf3a536429a9c1e6cda29ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryUI: {fileID: 0}
+  inventoryUI: {fileID: 9070947205256100138, guid: 62a65702bf8395d41b8decf75ce04edb, type: 3}
   inventoryData: {fileID: 11400000, guid: 5b8f05a9862cc3f4b84c1f0204adf7f7, type: 2}
   initialItems: []
   dropClip: {fileID: 0}
