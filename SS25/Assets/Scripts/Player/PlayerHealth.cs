@@ -26,6 +26,12 @@ public class PlayerHealth : MonoBehaviour
         {
         
         }
+        if (CurrentHealth < 0)
+        {
+            CurrentHealth = 0;
+            Debug.Log("Player has died!");
+            // Here you can add logic for player death, like respawning or ending the game
+        }
     }
 }
 
