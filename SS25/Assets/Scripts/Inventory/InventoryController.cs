@@ -13,6 +13,9 @@ namespace Inventory
     public class InventoryController : MonoBehaviour
     {
         [SerializeField]
+        private GameObject inventoryUIPrefab;
+
+        [SerializeField]
         private InventoryUI inventoryUI;
 
         [SerializeField]
@@ -28,6 +31,14 @@ namespace Inventory
 
         private void Start()
         {
+            if (inventoryUI == null)
+            {
+                var uiObj = Instantiate(inventoryUIPrefab);
+                inventoryUI = uiObj.GetComponent<InventoryUI>();
+                inventoryUI.ConnectPlayer(this);
+            }
+            
+            inventoryUI.InitializeUI();
             PrepareUI();
             PrepareInventoryData();
         }
@@ -77,7 +88,7 @@ namespace Inventory
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.IsEmpty)
             {
-                inventoryUI.ResetSelection();
+                //inventoryUI.ResetSelection();
                 return;
             }
             ItemSO item = inventoryItem.item;
