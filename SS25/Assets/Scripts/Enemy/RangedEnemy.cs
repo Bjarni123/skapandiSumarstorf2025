@@ -62,15 +62,33 @@ public class RangedEnemy : MonoBehaviour
         }
     }
 
-    void Shoot(Vector2 direction)
-    {
-        GameObject projectile = Instantiate(projectilePrefab, FirePoint.position, Quaternion.identity);
-        Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+void Shoot(Vector2 direction)
+{
+    // OPTION 1: Use enemy center (recommended)
+    Vector3 shootFromPosition = transform.position;
+    
+    // OPTION 2: Or if you want to use FirePoint, make sure it's world position
+    // Vector3 shootFromPosition = FirePoint.position;
+    
+    Vector3 playerWorldPos = player.position;
+    
+    Vector2 shootDirection = (playerWorldPos - shootFromPosition).normalized;
+    
+    // Calculate the rotation angle for the projectile
+    float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
+    Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    
+    GameObject projectile = Instantiate(projectilePrefab, shootFromPosition, rotation);
+    Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
 
-        Vector2 shootDirection = (player.position - FirePoint.position).normalized;
-        Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
-        projectileRb.linearVelocity = shootDirection * 5f;
-    }
+    Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
+    projectileRb.linearVelocity = shootDirection * 5f;
+    
+    // Debug output
+    Debug.Log($"Shooting from: {shootFromPosition} towards: {playerWorldPos}");
+    Debug.Log($"Shoot direction: {shootDirection}");
+    Debug.DrawRay(shootFromPosition, shootDirection * 3f, Color.red, 2f);
+}
 
     System.Collections.IEnumerator ReloadPause()
     {
