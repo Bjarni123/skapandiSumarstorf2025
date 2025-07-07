@@ -36,6 +36,16 @@ namespace Inventory.UI
 
         public event Action<int> OnDropItemRequested;
 
+        public void ConnectPlayer(InventoryController controller)
+        {
+            // Optionally store the reference if you need to call back to the controller
+        }
+
+        public void InitializeUI()
+        {
+            // Optionally initialize UI elements here
+        }
+
         private void Awake()
         {
             Hide();
@@ -100,7 +110,21 @@ namespace Inventory.UI
             int index = listOfItemsUI.IndexOf(inventoryUIItem);
             if (index == -1)
                 return;
+            DeselectAllItems();
+            listOfItemsUI[index].Select();
             OnDescriptionRequested?.Invoke(index);
+        }
+        
+        private void HandleShowItemActions(InventoryItemUI inventoryUIItem)
+        {
+            int index = listOfItemsUI.IndexOf(inventoryUIItem);
+            if (index == -1)
+            {
+                return;
+            }
+            DeselectAllItems();
+            listOfItemsUI[index].Select();
+            OnItemActionRequested?.Invoke(index);
         }
 
         private void HandleSwap(InventoryItemUI inventoryUIItem)
@@ -143,16 +167,6 @@ namespace Inventory.UI
                 }
             }
             ResetDraggedItem();
-        }
-
-        private void HandleShowItemActions(InventoryItemUI inventoryUIItem)
-        {
-            int index = listOfItemsUI.IndexOf(inventoryUIItem);
-            if (index == -1)
-            {
-                return;
-            }
-            OnItemActionRequested?.Invoke(index);
         }
 
         public void Show()

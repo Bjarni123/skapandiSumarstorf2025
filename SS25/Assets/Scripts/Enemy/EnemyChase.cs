@@ -22,6 +22,7 @@ public class EnemyChase : MonoBehaviour
     void FixedUpdate()
     {
         if (GetComponent<EnemyAttack>().IsAttacking) return;
+
         Vector2 enemyPos = rb.position;
         Vector2 playerPos = player.position;
 

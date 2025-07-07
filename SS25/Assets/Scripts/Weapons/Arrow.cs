@@ -14,12 +14,11 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerHealth CurrentHealth = other.GetComponent<PlayerHealth>();
-            if (CurrentHealth != null)
+            PlayerHealth currentHealth = other.GetComponent<PlayerHealth>();
+            if (currentHealth != null)
             {
-                CurrentHealth.TakeDamage(damage);
+                currentHealth.TakeDamage(damage);
             }
-
             Destroy(gameObject);
         }
         else if (other.CompareTag("Wall"))

@@ -20,9 +20,10 @@ GameObject:
   - component: {fileID: 6859392225035962051}
   - component: {fileID: 6640793529334249087}
   - component: {fileID: 1904139925869362940}
-  m_Layer: 0
+  - component: {fileID: 7196362959825420135}
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,7 +146,7 @@ Rigidbody2D:
   m_Interpolate: 2
   m_SleepingMode: 0
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1957573934137925374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af383789cf3a536429a9c1e6cda29ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryUI: {fileID: 9070947205256100138, guid: 62a65702bf8395d41b8decf75ce04edb, type: 3}
+  inventoryUIPrefab: {fileID: 4737632100466138004, guid: 59fd8ea2ca426eb45a261fafba3efc5c, type: 3}
+  inventoryUI: {fileID: 0}
   inventoryData: {fileID: 11400000, guid: 5b8f05a9862cc3f4b84c1f0204adf7f7, type: 2}
   initialItems: []
   dropClip: {fileID: 0}
@@ -307,3 +309,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.630185, y: 0.56621104}
   m_EdgeRadius: 0
+--- !u!114 &7196362959825420135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867674701766975658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307f8cc738d396b4688284ce8a6f6a39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 100
+  CurrentHealth: 0
