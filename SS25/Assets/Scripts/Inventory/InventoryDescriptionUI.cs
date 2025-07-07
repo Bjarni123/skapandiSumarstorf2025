@@ -27,6 +27,7 @@ namespace Inventory.UI
 
         public void SetDescription(Sprite sprite, string itemName, string itemDescription)
         {
+            Debug.Log($"SetDescription called with sprite: {sprite}, name: {itemName}");
             itemImage.gameObject.SetActive(true);
             itemImage.sprite = sprite;
             title.text = itemName;
