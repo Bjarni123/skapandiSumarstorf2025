@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2211486703919856922}
   - component: {fileID: 6364668451948601985}
-  - component: {fileID: 7116176168367260762}
+  - component: {fileID: 7997327388421092480}
   - component: {fileID: 5672694852791447651}
   - component: {fileID: 6289253079493417356}
   - component: {fileID: 4312989459447469530}
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.13978, y: -0.98272, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 5.5, y: 5.5, z: 5.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,14 +44,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2745849454908127515}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -63,8 +63,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &7116176168367260762
-CircleCollider2D:
+--- !u!70 &7997327388421092480
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -97,8 +97,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Offset: {x: 0, y: -0.008607366}
+  m_Size: {x: 0.22000001, y: 0.32721472}
+  m_Direction: 0
 --- !u!114 &5672694852791447651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +117,6 @@ MonoBehaviour:
   AttackRange: 1.5
   KeepDistance: 1
   MoveSpeed: 3
-  RotationSpeed: 5
   AttackDamage: 10
   AttackCooldown: 2
   AttackDuration: 0.5
@@ -133,7 +133,7 @@ Animator:
   m_GameObject: {fileID: 2745849454908127515}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ba049542d97c6de478fc582fd5d59cfe, type: 2}
+  m_Controller: {fileID: 9100000, guid: 99f7d0b10acc8a6458e42f0ed40e4215, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -189,7 +189,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5750991524852068066, guid: b33cac712e01201429ffbbaafc7d2b4d, type: 3}
+  m_Sprite: {fileID: 3354407868906839231, guid: 0f512335afecc2646a2fc6925fadab3b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
