@@ -10,7 +10,7 @@ public class SimpleEnemy : MonoBehaviour
     
     [Header("Movement")]
     public float MoveSpeed = 3f;
-    public float RotationSpeed = 5f;
+    // Removed RotationSpeed since we're not rotating anymore
     
     [Header("Attack")]
     public float AttackDamage = 10f;
@@ -34,6 +34,10 @@ public class SimpleEnemy : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     
+    // Direction tracking for 4-way movement
+    private Vector2 _lastMoveDirection;
+    private Vector2 _facingDirection;
+    
     // States
     private enum EnemyState
     {
@@ -53,6 +57,13 @@ public class SimpleEnemy : MonoBehaviour
         
         // Initialize
         _currentHealth = MaxHealth;
+        _facingDirection = Vector2.down; // Default facing direction
+        
+        // Lock rotation to keep enemy upright
+        if (_rb != null)
+        {
+            _rb.freezeRotation = true;
+        }
        
         // Auto-find player if not assigned
         if (player == null)
@@ -123,8 +134,8 @@ public class SimpleEnemy : MonoBehaviour
             Vector2 moveDirection = (_targetPosition - (Vector2)transform.position).normalized;
             _rb.linearVelocity = moveDirection * MoveSpeed;
             
-            // Rotate towards movement direction
-            RotateTowards(moveDirection);
+            // Update facing direction for 4-way movement
+            UpdateFacingDirection(moveDirection);
         }
         else
         {
@@ -133,17 +144,29 @@ public class SimpleEnemy : MonoBehaviour
         }
     }
 
-    void RotateTowards(Vector2 direction)
+    void UpdateFacingDirection(Vector2 moveDirection)
     {
-        if (direction != Vector2.zero)
+        if (moveDirection.magnitude < 0.1f) return;
+        
+        // Store the last move direction for animation
+        _lastMoveDirection = moveDirection;
+        
+        // Determine 4-way facing direction
+        if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            float targetAngle = angle - 90f; // Adjust based on your sprite orientation
-            
-            // Smooth rotation
-            float currentAngle = transform.eulerAngles.z;
-            float newAngle = Mathf.LerpAngle(currentAngle, targetAngle, RotationSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0, 0, newAngle);
+            // Moving more horizontally
+            _facingDirection = moveDirection.x > 0 ? Vector2.right : Vector2.left;
+        }
+        else
+        {
+            // Moving more vertically
+            _facingDirection = moveDirection.y > 0 ? Vector2.up : Vector2.down;
+        }
+        
+        // Optional: Flip sprite horizontally based on direction
+        if (_spriteRenderer != null)
+        {
+            _spriteRenderer.flipX = _facingDirection.x < 0;
         }
     }
 
@@ -156,9 +179,9 @@ public class SimpleEnemy : MonoBehaviour
         // Stop moving during attack
         StopMoving();
         
-        // Face the player
+        // Face the player without rotating
         Vector2 directionToPlayer = (player.position - transform.position).normalized;
-        RotateTowards(directionToPlayer);
+        UpdateFacingDirection(directionToPlayer);
         
         // Start attack coroutine
         StartCoroutine(AttackSequence());
@@ -208,12 +231,22 @@ public class SimpleEnemy : MonoBehaviour
         _animator.SetFloat("MoveSpeed", _rb.linearVelocity.magnitude);
         _animator.SetFloat("Health", _currentHealth / MaxHealth); // Health percentage
         
-        // Set movement direction for 8-directional animations
+        // Set movement direction for 4-directional animations
         if (_rb.linearVelocity.magnitude > 0.1f)
         {
-            _animator.SetFloat("MoveX", _rb.linearVelocity.x);
-            _animator.SetFloat("MoveY", _rb.linearVelocity.y);
+            _animator.SetFloat("MoveX", _lastMoveDirection.x);
+            _animator.SetFloat("MoveY", _lastMoveDirection.y);
         }
+        else
+        {
+            // Use facing direction when idle
+            _animator.SetFloat("MoveX", _facingDirection.x);
+            _animator.SetFloat("MoveY", _facingDirection.y);
+        }
+        
+        // Additional parameters for 4-way directional animations
+        _animator.SetFloat("FacingX", _facingDirection.x);
+        _animator.SetFloat("FacingY", _facingDirection.y);
     }
 
     public void TakeDamage(float damage)
@@ -303,8 +336,6 @@ public class SimpleEnemy : MonoBehaviour
         Destroy(gameObject, 2f);
     }
 
-    // Remove the old FlashRed method since we replaced it with DamageFlashEffect
-
     // Gizmos for debugging
     void OnDrawGizmosSelected()
     {
@@ -319,5 +350,9 @@ public class SimpleEnemy : MonoBehaviour
         // Keep distance
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, KeepDistance);
+        
+        // Show facing direction
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(transform.position, _facingDirection * 1f);
     }
 }
