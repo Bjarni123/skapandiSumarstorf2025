@@ -124,6 +124,7 @@ namespace Inventory.UI
             }
             DeselectAllItems();
             listOfItemsUI[index].Select();
+            OnDescriptionRequested?.Invoke(index);
             OnItemActionRequested?.Invoke(index);
         }
 
