@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5672694852791447651}
   - component: {fileID: 6289253079493417356}
   - component: {fileID: 4312989459447469530}
+  - component: {fileID: 8017496465929862962}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -31,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.13978, y: -0.98272, z: 0}
-  m_LocalScale: {x: 5.5, y: 5.5, z: 5.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -200,3 +201,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8017496465929862962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2745849454908127515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf275db025915c744ba5f6be44a3c829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPointRadius: 3
+  returnToSpawnSpeed: 2
+  playerDetectionRange: 10
+  health: 10
