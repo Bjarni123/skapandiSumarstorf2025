@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.AI;
 
+// Enhanced Enemy Controller that handles spawn point behavior
 public class EnemyController : MonoBehaviour
 {
     [Header("Spawn Point Behavior")]
-    public float spawnPointRadius = 3f;
-    public float returnToSpawnSpeed = 2f;
-    public float playerDetectionRange = 10f;
+    public float SpawnPointRadius = 3f;
+    public float ReturnToSpawnSpeed = 2f;
+    public float PlayerDetectionRange = 10f;
     
     private Vector3 spawnPoint;
     private Transform player;
@@ -14,13 +14,17 @@ public class EnemyController : MonoBehaviour
     private bool playerInRange = false;
     
     // Reference to your existing enemy script components
-    private RangedEnemy rangedEnemy;
-    private Rigidbody2D rb;
+    private RangedEnemy _rangedEnemy;
+    private Rigidbody2D _rb;
     
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        rangedEnemy = GetComponent<RangedEnemy>();
+        _rb = GetComponent<Rigidbody2D>();
+        _rangedEnemy = GetComponent<RangedEnemy>();
+        
+        // Ensure proper initial scale
+        transform.localScale = new Vector3(1, 1, 1);
+        transform.rotation = Quaternion.identity;
         
         // Set spawn point to current position if not set
         if (spawnPoint == Vector3.zero)
@@ -34,7 +38,7 @@ public class EnemyController : MonoBehaviour
         if (player == null) return;
         
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        playerInRange = distanceToPlayer <= playerDetectionRange;
+        playerInRange = distanceToPlayer <= PlayerDetectionRange;
         
         if (playerInRange)
         {
@@ -42,17 +46,17 @@ public class EnemyController : MonoBehaviour
             isReturningToSpawn = false;
             
             // Enable the ranged enemy script
-            if (rangedEnemy != null)
+            if (_rangedEnemy != null)
             {
-                rangedEnemy.enabled = true;
+                _rangedEnemy.enabled = true;
             }
         }
         else
         {
             // Player is out of range - return to spawn point
-            if (rangedEnemy != null)
+            if (_rangedEnemy != null)
             {
-                rangedEnemy.enabled = false;
+                _rangedEnemy.enabled = false;
             }
             
             ReturnToSpawnPoint();
@@ -69,7 +73,7 @@ public class EnemyController : MonoBehaviour
             
             // Move towards spawn point
             Vector3 direction = (spawnPoint - transform.position).normalized;
-            rb.linearVelocity = direction * returnToSpawnSpeed;
+            _rb.linearVelocity = direction * ReturnToSpawnSpeed;
             
             // Face the direction we're moving
             UpdateFacingDirection(direction);
@@ -78,24 +82,30 @@ public class EnemyController : MonoBehaviour
         {
             // We're at spawn point, stop moving
             isReturningToSpawn = false;
-            rb.linearVelocity = Vector2.zero;
+            _rb.linearVelocity = Vector2.zero;
         }
     }
     
-    void UpdateFacingDirection(Vector2 direction)
+    void UpdateFacingDirection(Vector3 direction)
     {
-    if (direction.x > 0)
-    {
-        // Facing right
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-        transform.localScale = new Vector3(1, 1, 1);
-    }
-    else if (direction.x < 0)
-    {
-        // Facing left
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-        transform.localScale = new Vector3(-1, 1, 1);
-    }
+        // Get the current scale magnitude to preserve size
+        float currentScale = transform.localScale.x;
+        float scaleSize = Mathf.Abs(currentScale);
+        
+        // For 2D sprites, usually you only want to flip horizontally
+        if (direction.x > 0)
+        {
+            // Facing right - normal orientation
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.localScale = new Vector3(scaleSize, scaleSize, scaleSize);
+        }
+        else if (direction.x < 0)
+        {
+            // Facing left - flip horizontally
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.localScale = new Vector3(-scaleSize, scaleSize, scaleSize);
+        }
+        // Don't rotate for vertical movement, just keep current horizontal facing
     }
     
     public void SetSpawnPoint(Vector3 point)
@@ -108,9 +118,9 @@ public class EnemyController : MonoBehaviour
         player = playerTransform;
         
         // Also set the player reference for the ranged enemy
-        if (rangedEnemy != null)
+        if (_rangedEnemy != null)
         {
-            rangedEnemy.player = playerTransform;
+            _rangedEnemy.player = playerTransform;
         }
     }
     
@@ -118,11 +128,11 @@ public class EnemyController : MonoBehaviour
     {
         // Draw spawn point
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(spawnPoint, spawnPointRadius);
+        Gizmos.DrawWireSphere(spawnPoint, SpawnPointRadius);
         
         // Draw detection range
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, playerDetectionRange);
+        Gizmos.DrawWireSphere(transform.position, PlayerDetectionRange);
         
         // Draw line to spawn point
         Gizmos.color = Color.red;
@@ -137,14 +147,5 @@ public class EnemyController : MonoBehaviour
         {
             spawner.OnEnemyDestroyed(gameObject);
         }
-    }
-
-    public int health = 10;
-
-    public void TakeDamage(int damageAmount)
-    {
-        Debug.Log("Take Damage");
-        health -= damageAmount;
-        if (health <= 0) Destroy(gameObject);
     }
 }
