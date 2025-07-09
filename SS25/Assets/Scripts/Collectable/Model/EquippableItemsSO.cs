@@ -14,7 +14,7 @@ namespace Inventory.Model
         Boots
     }
 
-    [CreateAssetMenu(fileName = "New Equippable Item", menuName = "Inventory/Equippable Item")]
+    [CreateAssetMenu]
     public class EquippableItemsSO : ItemSO, IDestroyableItem, IItemAction
     {
         public string ActionName => "Equip";
