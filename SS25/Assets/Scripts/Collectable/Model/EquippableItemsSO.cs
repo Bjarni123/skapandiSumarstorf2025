@@ -3,13 +3,27 @@ using UnityEngine;
 
 namespace Inventory.Model
 {
-    [CreateAssetMenu]
-    public class EquippableToolsItemSO : ItemSO, IDestroyableItem, IItemAction
+    public enum EquipmentType
+    {
+        None,
+        Sword,
+        Axe,
+        Pickaxe,
+        Helmet,
+        Chestplate,
+        Boots
+    }
+
+    [CreateAssetMenu(fileName = "New Equippable Item", menuName = "Inventory/Equippable Item")]
+    public class EquippableItemsSO : ItemSO, IDestroyableItem, IItemAction
     {
         public string ActionName => "Equip";
 
         [field: SerializeField]
         public AudioClip actionSFX { get; private set; }
+
+        public EquipmentType equipmentType;
+        public List<ItemParameter> parameters = new List<ItemParameter>();
 
         public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
         {
