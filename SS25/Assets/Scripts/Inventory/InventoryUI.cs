@@ -32,6 +32,9 @@ namespace Inventory.UI
         private ItemActionPanel actionPanel;
 
         [SerializeField]
+        private ItemActionPanel actionPanelLeft;
+
+        [SerializeField]
         private RectTransform inventoryPanelRect1;
 
         public event Action<int> OnDropItemRequested;
@@ -51,6 +54,7 @@ namespace Inventory.UI
             Hide();
             mouseFollower.Toggle(false);
             itemDescription.ResetDescription();
+            actionPanelLeft = actionPanel;
         }
 
         public void InitilizeInventoryUI(int inventorySize)
@@ -219,6 +223,7 @@ namespace Inventory.UI
         public void Hide()
         {
             actionPanel.Toggle(false);
+            actionPanelLeft.Toggle(false);
             gameObject.SetActive(false);
             ResetDraggedItem();
         }

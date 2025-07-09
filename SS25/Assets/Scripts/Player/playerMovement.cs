@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 input;
     private Vector2 lastMoveDirection;
 
-    private bool facingRight = true;
+    private bool facingRight = false;
 
 
     private PlayerStateManager playerStateManager;
