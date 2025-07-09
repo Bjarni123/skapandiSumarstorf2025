@@ -19,6 +19,9 @@ public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     public Image borderImageEquip;
 
+    [SerializeField]
+    public Image iconImagePreview;
+
     public event Action<EquipmentSlotUI> OnRightMouseBtnClick;
 
     public void HideBorder()
@@ -50,6 +53,7 @@ public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
         equippedItem = item;
         iconImageEquip.sprite = item.ItemImage;
         iconImageEquip.enabled = true;
+        iconImagePreview.enabled = false;
         Debug.Log($"iconImage assigned: {iconImageEquip != null}, sprite: {item.ItemImage}");
         return true;
     }
@@ -64,6 +68,7 @@ public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
         equippedItem = null;
         iconImageEquip.sprite = null;
         iconImageEquip.enabled = false;
+        iconImagePreview.enabled = true;
     }
 
     public EquippableItemsSO GetEquippedItem()

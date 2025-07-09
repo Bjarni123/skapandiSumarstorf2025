@@ -16,10 +16,10 @@ public class AgentWeapon : MonoBehaviour
 
     public void SetWeapon(EquippableItemsSO weaponItemSO, List<ItemParameter> itemState)
     {
-        if (weapon != null && weapon != weaponItemSO)
+        /*if (weapon != null && weapon != weaponItemSO)
         {
             inventoryData.AddItem(weapon, 1, itemCurrentState);
-        }
+        }*/
 
         this.weapon = weaponItemSO;
         this.itemCurrentState = new List<ItemParameter>(itemState);
