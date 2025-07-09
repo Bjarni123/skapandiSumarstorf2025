@@ -1,8 +1,10 @@
 using Inventory.Model;
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EquipmentSlotUI : MonoBehaviour
+public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
     private EquipmentType acceptedType;
@@ -12,11 +14,22 @@ public class EquipmentSlotUI : MonoBehaviour
     private EquippableItemsSO equippedItem;
 
     [SerializeField]
-    private Image iconImage;
+    private Image iconImageEquip;
+
+    [SerializeField]
+    public Image borderImageEquip;
+
+    public event Action<EquipmentSlotUI> OnRightMouseBtnClick;
+
+    public void HideBorder()
+    {
+        iconImageEquip.enabled = false;
+        borderImageEquip.enabled = false;
+    }
 
     public bool SetItem(EquippableItemsSO item)
     {
-        if (iconImage == null)
+        if (iconImageEquip == null)
         {
             Debug.LogError("EquipmentSlotUI: iconImage is not assigned!");
             return false;
@@ -35,26 +48,34 @@ public class EquipmentSlotUI : MonoBehaviour
         }
 
         equippedItem = item;
-        iconImage.sprite = item.ItemImage;
-        iconImage.enabled = true;
-        Debug.Log($"iconImage assigned: {iconImage != null}, sprite: {item.ItemImage}");
+        iconImageEquip.sprite = item.ItemImage;
+        iconImageEquip.enabled = true;
+        Debug.Log($"iconImage assigned: {iconImageEquip != null}, sprite: {item.ItemImage}");
         return true;
     }
 
     public void ClearItem()
     {
-        if (iconImage == null)
+        if (iconImageEquip == null)
         {
             Debug.LogError("iconImage is not assigned in EquipmentSlotUI!");
             return;
         }
         equippedItem = null;
-        iconImage.sprite = null;
-        iconImage.enabled = false;
+        iconImageEquip.sprite = null;
+        iconImageEquip.enabled = false;
     }
 
     public EquippableItemsSO GetEquippedItem()
     {
         return equippedItem;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            OnRightMouseBtnClick?.Invoke(this);
+        }
     }
 }

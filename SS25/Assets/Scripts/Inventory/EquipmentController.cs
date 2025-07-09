@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Inventory.Model;
+using Inventory.UI;
 
 public class EquipmentController : MonoBehaviour
 {
@@ -10,13 +11,20 @@ public class EquipmentController : MonoBehaviour
 
     private Dictionary<EquipmentType, EquipmentSlotUI> slotMap;
 
+    [SerializeField]
+    private ItemActionPanel actionPanel;
+
+    [SerializeField]
+    private InventorySO inventoryData;
+
     private void Awake()
     {
-        // Build a lookup for quick access
         slotMap = new Dictionary<EquipmentType, EquipmentSlotUI>();
         foreach (var slot in equipmentSlots)
         {
             slotMap[slot.AcceptedType] = slot;
+            slot.HideBorder();
+            slot.OnRightMouseBtnClick += HandleEquipmentSlotRightClick;
         }
     }
 
@@ -84,5 +92,29 @@ public class EquipmentController : MonoBehaviour
 
         Debug.Log("Equip: End");
         return true;
+    }
+
+    private void HandleEquipmentSlotRightClick(EquipmentSlotUI slotUI)
+    {
+        if (slotUI.GetEquippedItem() == null)
+            return;
+
+        actionPanel.ClearActions();
+        actionPanel.AddButton("Unequip", () => Unequip(slotUI));
+        actionPanel.Toggle(true);
+        actionPanel.transform.position = slotUI.transform.position;
+    }
+
+    private void Unequip(EquipmentSlotUI slotUI)
+    {
+        var item = slotUI.GetEquippedItem();
+        if (item == null)
+            return;
+
+        inventoryData.AddItem(item, 1);
+
+        slotUI.ClearItem();
+        slotUI.HideBorder();
+        actionPanel.Toggle(false);
     }
 }
