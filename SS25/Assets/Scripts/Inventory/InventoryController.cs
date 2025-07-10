@@ -49,9 +49,7 @@ namespace Inventory
             {
                 equipmentController = canvasObj.GetComponentInChildren<EquipmentController>(true);
                 if (equipmentController == null)
-                {
-                    Debug.LogError("EquipmentController not found in instantiated InventoryCanvas!");
-                }
+                    return;
             }
 
             inventoryUI.InitializeUI();
@@ -154,12 +152,22 @@ namespace Inventory
             IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
             if (destroyableItem != null)
             {
-                inventoryUI.SetActions(new List<(string, Action)>
+                if (inventoryItem.quantity == 1)
                 {
-                    (itemAction.ActionName, () => PerformAction(itemIndex)),
-                    ("Drop", () => ShowDropOptions(itemIndex, inventoryItem.quantity))
-                });
-
+                    inventoryUI.SetActions(new List<(string, Action)>
+                    {
+                        (itemAction.ActionName, () => PerformAction(itemIndex)),
+                        ("Drop", () => DropItem(itemIndex, 1))
+                    });
+                }
+                else
+                {
+                    inventoryUI.SetActions(new List<(string, Action)>
+                    {
+                        (itemAction.ActionName, () => PerformAction(itemIndex)),
+                        ("Drop", () => ShowDropOptions(itemIndex, inventoryItem.quantity))
+                    });
+                }
             }
         }
 
@@ -205,26 +213,17 @@ namespace Inventory
         {
             try
             {
-                Debug.Log($"PerformAction called with itemIndex={itemIndex}");
                 InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
                 if (inventoryItem.IsEmpty)
-                {
-                    Debug.Log("inventoryItem.IsEmpty, returning early.");
                     return;
-                }
+
                 if (inventoryItem.item == null)
-                {
-                    Debug.LogError($"inventoryItem.item is null at index {itemIndex}");
                     return;
-                }
 
                 var equippable = inventoryItem.item as EquippableItemsSO;
-                Debug.Log("Checked equippable");
                 if (equippable != null)
                 {
-                    Debug.Log("Equippable found, calling Equip");
                     bool equipped = equipmentController.Equip(equippable, gameObject, inventoryItem.itemState);
-                    Debug.Log("Equip called");
                     if (equipped)
                     {
                         inventoryData.RemoveItem(itemIndex, 1);
@@ -234,22 +233,18 @@ namespace Inventory
                 }
 
                 IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
-                Debug.Log("Checked destroyableItem");
                 if (destroyableItem != null)
                 {
                     inventoryData.RemoveItem(itemIndex, 1);
                 }
 
                 IItemAction itemAction = inventoryItem.item as IItemAction;
-                Debug.Log("Checked itemAction");
                 if (itemAction != null)
                 {
                     var state = inventoryItem.itemState ?? new List<ItemParameter>();
-                    Debug.Log("About to call itemAction.PerformAction");
                     try
                     {
                         itemAction.PerformAction(gameObject, state);
-                        Debug.Log("itemAction.PerformAction called");
                     }
                     catch (Exception ex)
                     {
@@ -261,7 +256,6 @@ namespace Inventory
                         inventoryUI.ResetSelection();
                     }
                 }
-                Debug.Log("End of PerformAction");
             }
             catch (Exception ex)
             {

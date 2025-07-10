@@ -30,35 +30,24 @@ public class EquipmentController : MonoBehaviour
 
     public bool Equip(EquippableItemsSO item, GameObject player, List<ItemParameter> itemState)
     {
-        Debug.Log("Equip: Start");
         if (item == null)
-        {
-            Debug.LogError("Equip: item is null!");
             return false;
-        }
+
         if (slotMap == null)
-        {
-            Debug.LogError("Equip: slotMap is null!");
             return false;
-        }
+
         if (!slotMap.TryGetValue(item.equipmentType, out var slotUI))
-        {
-            Debug.LogError($"Equip: No slot found for type {item.equipmentType}");
             return false;
-        }
+
         if (slotUI == null)
-        {
-            Debug.LogError("Equip: slotUI is null!");
             return false;
-        }
-        Debug.Log("Equip: slotUI found");
 
         bool set = false;
         try
         {
             set = slotUI.SetItem(item);
-            Debug.Log($"Equip: slotUI.SetItem returned {set}");
         }
+
         catch (Exception ex)
         {
             Debug.LogError($"Equip: Exception in slotUI.SetItem: {ex}");
@@ -70,6 +59,7 @@ public class EquipmentController : MonoBehaviour
         {
             slotUI.SetItem(item);
         }
+
         catch (Exception ex)
         {
             Debug.LogError($"Equip: Exception in slotUI.SetItem (second call): {ex}");
@@ -89,8 +79,6 @@ public class EquipmentController : MonoBehaviour
                 Debug.LogError($"Equip: Exception in agentWeapon.SetWeapon: {ex}");
             }
         }
-
-        Debug.Log("Equip: End");
         return true;
     }
 
