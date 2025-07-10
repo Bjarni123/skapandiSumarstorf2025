@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.AI;
 
+// Enhanced Enemy Controller that handles spawn point behavior
 public class EnemyController : MonoBehaviour
 {
     [Header("Spawn Point Behavior")]
