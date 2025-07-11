@@ -16,6 +16,7 @@ public class RangedEnemy : MonoBehaviour
     private float _lastFireTime;
     private bool _isReloading = false;
     private bool _isAttacking = false;  // New: track attack state
+    private Vector2 _attackDirection;   // Store attack direction for animation event
 
     private Rigidbody2D _rb;
     private Animator _animator;  // New: animator reference
@@ -100,8 +101,8 @@ public class RangedEnemy : MonoBehaviour
 
     System.Collections.IEnumerator AttackSequence(Vector2 direction)
     {
-        // Fire the projectile immediately when attack starts
-        Shoot(direction);
+        // Store the direction for the animation event to use
+        _attackDirection = direction;
         
         // Wait for the attack animation to complete
         yield return new WaitForSeconds(GetAttackAnimationDuration());
@@ -169,8 +170,14 @@ public class RangedEnemy : MonoBehaviour
         }
     }
 
+    // Animation Event method - call this from your animation at the firing moment
+    public void FireProjectile()
+    {
+        Shoot(_attackDirection);
+    }
+
     // Optional: Animation Event method - call this from your animation
-    public void OnAttackAnimationComplete()
+    public void AttackAnimationComplete()
     {
         _isAttacking = false;
         StartCoroutine(ReloadPause());

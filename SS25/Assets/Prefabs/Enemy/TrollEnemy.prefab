@@ -174,7 +174,11 @@ MonoBehaviour:
   MoveSpeed: 3
   AttackDamage: 10
   AttackCooldown: 2
-  AttackDuration: 0.5
+  AttackDuration: 0.7
+  AttackRadius: 0.75
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 8
   MaxHealth: 50
   KnockbackForce: 5
   KnockbackDuration: 0.3

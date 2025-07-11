@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 8568405675288735078}
   - component: {fileID: 2987771621838988600}
   - component: {fileID: 2802082913845439993}
-  - component: {fileID: 5605673154645967841}
   - component: {fileID: 4801345955731369593}
   m_Layer: 6
   m_Name: RangedEnemy
@@ -195,33 +194,6 @@ MonoBehaviour:
   returnToSpawnSpeed: 2
   playerDetectionRange: 10
   health: 10
---- !u!114 &5605673154645967841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7186912280202208993}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f7314ebdeeb1c949afcf15217e49d6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  wanderRadius: 10
-  wanderTimer: 5
-  detectionRange: 8
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  player: {fileID: 0}
-  shootRange: 6
-  projectilePrefab: {fileID: 2870366853912507741, guid: 4635135f94ce89644be8a32f77d19c51, type: 3}
-  firePoint: {fileID: 2580996776852796994}
-  fireRate: 1
-  shotsToFire: 3
-  retreatDistance: 12
-  showGizmos: 1
 --- !u!95 &4801345955731369593
 Animator:
   serializedVersion: 7
