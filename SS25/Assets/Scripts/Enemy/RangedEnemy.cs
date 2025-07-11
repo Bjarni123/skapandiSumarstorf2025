@@ -15,13 +15,17 @@ public class RangedEnemy : MonoBehaviour
 
     private float _lastFireTime;
     private bool _isReloading = false;
+    private bool _isAttacking = false;  // New: track attack state
+    private Vector2 _attackDirection;   // Store attack direction for animation event
 
-    private Rigidbody2D _rb;  // Fixed: consistent naming
+    private Rigidbody2D _rb;
+    private Animator _animator;  // New: animator reference
     public Transform FirePoint;
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();  // Fixed: correct variable name
+        _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();  // New: get animator component
         
         // Auto-find player if not assigned
         if (player == null)
@@ -34,18 +38,22 @@ public class RangedEnemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (player == null || _rb == null) return;  // Added _rb null check
+        if (player == null || _rb == null) return;
 
         Vector2 direction = (player.position - transform.position);
         float distance = direction.magnitude;
         
         if (distance > DetectionRadius)
+        {
+            _rb.linearVelocity = Vector2.zero;
             return;
+        }
 
         direction.Normalize();
         UpdateFacingDirection(direction);
 
-        if (!_isReloading)
+        // Only move if not reloading AND not attacking
+        if (!_isReloading && !_isAttacking)
         {
             if (distance > DesiredDistance)
             {
@@ -60,21 +68,67 @@ public class RangedEnemy : MonoBehaviour
                 _rb.linearVelocity = Vector2.zero; // Stop when in optimal range
             }
         }
+        else
+        {
+            // Stop movement during attack or reload
+            _rb.linearVelocity = Vector2.zero;
+        }
 
-        // Shoot when in range
-        if (distance <= DesiredDistance && distance >= RetreatDistance)
+        // Shoot when in range and not currently attacking
+        if (distance <= DesiredDistance && distance >= RetreatDistance && !_isAttacking && !_isReloading)
         {
             if (Time.time >= _lastFireTime + FireRate)
             {
-            Shoot(direction);
-            _lastFireTime = Time.time;
-            StartCoroutine(ReloadPause());
+                StartAttack(direction);
+                _lastFireTime = Time.time;
+            }
         }
-        else
+    }
+
+    void StartAttack(Vector2 direction)
+    {
+        _isAttacking = true;
+        
+        // Trigger the attack animation
+        if (_animator != null)
         {
-            _rb.linearVelocity = Vector2.zero;
+            _animator.SetTrigger("Attack");
         }
+        
+        // Start the attack sequence
+        StartCoroutine(AttackSequence(direction));
+    }
+
+    System.Collections.IEnumerator AttackSequence(Vector2 direction)
+    {
+        // Store the direction for the animation event to use
+        _attackDirection = direction;
+        
+        // Wait for the attack animation to complete
+        yield return new WaitForSeconds(GetAttackAnimationDuration());
+        
+        // Attack is complete, start reload
+        _isAttacking = false;
+        StartCoroutine(ReloadPause());
+    }
+
+    float GetAttackAnimationDuration()
+    {
+        // Method 1: Return a fixed duration
+        // return 0.5f; // Adjust based on your animation length
+        
+        // Method 2: Get duration from animator (more dynamic)
+        if (_animator != null)
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Attack")) // Replace "Attack" with your actual animation state name
+            {
+                return stateInfo.length;
+            }
         }
+        
+        // Fallback duration
+        return 0.5f;
     }
 
     void Shoot(Vector2 direction)
@@ -107,14 +161,26 @@ public class RangedEnemy : MonoBehaviour
 
     void UpdateFacingDirection(Vector2 direction)
     {
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        // Remove automatic rotation - let blend tree handle direction
+        // Set blend tree parameters for animation direction
+        if (_animator != null)
         {
-            transform.rotation = Quaternion.Euler(0, 0, direction.x > 0 ? 0 : 180);
+            _animator.SetFloat("FacingX", direction.x);
+            _animator.SetFloat("FacingY", direction.y);
         }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 0, direction.y > 0 ? 90 : -90);
-        }
+    }
+
+    // Animation Event method - call this from your animation at the firing moment
+    public void FireProjectile()
+    {
+        Shoot(_attackDirection);
+    }
+
+    // Optional: Animation Event method - call this from your animation
+    public void AttackAnimationComplete()
+    {
+        _isAttacking = false;
+        StartCoroutine(ReloadPause());
     }
 
     void OnDrawGizmosSelected()

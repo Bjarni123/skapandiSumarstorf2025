@@ -142,7 +142,7 @@ public class EnemyController : MonoBehaviour
     void OnDestroy()
     {
         // Notify the spawner that this enemy was destroyed
-        EnemySpawner spawner = FindObjectOfType<EnemySpawner>();
+        EnemySpawner spawner = FindFirstObjectByType<EnemySpawner>();
         if (spawner != null)
         {
             spawner.OnEnemyDestroyed(gameObject);
