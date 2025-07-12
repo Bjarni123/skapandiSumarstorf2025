@@ -30,39 +30,28 @@ public class EquipmentController : MonoBehaviour
 
     public bool Equip(EquippableItemsSO item, GameObject player, List<ItemParameter> itemState)
     {
-        if (item == null)
+        if (item == null || slotMap == null)
             return false;
 
-        if (slotMap == null)
+        if (!slotMap.TryGetValue(item.equipmentType, out var slotUI) || slotUI == null)
             return false;
 
-        if (!slotMap.TryGetValue(item.equipmentType, out var slotUI))
-            return false;
-
-        if (slotUI == null)
-            return false;
+        // Check if something is already equipped
+        var currentlyEquipped = slotUI.GetEquippedItem();
+        if (currentlyEquipped != null)
+        {
+            // Add the currently equipped item back to inventory
+            inventoryData.AddItem(currentlyEquipped, 1);
+        }
 
         bool set = false;
         try
         {
             set = slotUI.SetItem(item);
         }
-
         catch (Exception ex)
         {
             Debug.LogError($"Equip: Exception in slotUI.SetItem: {ex}");
-            return false;
-        }
-
-        // Set in UI again (if needed)
-        try
-        {
-            slotUI.SetItem(item);
-        }
-
-        catch (Exception ex)
-        {
-            Debug.LogError($"Equip: Exception in slotUI.SetItem (second call): {ex}");
             return false;
         }
 
