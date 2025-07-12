@@ -16,6 +16,8 @@ public class SimpleEnemy : MonoBehaviour
     public float AttackDamage = 10f;
     public float AttackCooldown = 2f;
     public float AttackDuration = 0.5f; // How long attack animation lasts
+    public float AttackRadius = 1f; // Radius of attack area
+    public LayerMask PlayerLayer = -1; // Layer mask for player detection
     
     [Header("Health")]
     public float MaxHealth = 50f;
@@ -29,6 +31,9 @@ public class SimpleEnemy : MonoBehaviour
     private bool _isKnockedBack = false;
     private float _lastAttackTime;
     private bool _isAttacking = false;
+    private bool _showAttackGizmo = false;
+    private Vector2 _attackGizmoPosition;
+    private float _attackGizmoTimer = 0f;
     private Vector2 _targetPosition;
     private Rigidbody2D _rb;
     private Animator _animator;
@@ -79,6 +84,16 @@ public class SimpleEnemy : MonoBehaviour
         if (player == null || _currentState == EnemyState.Dead) return;
         
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        
+        // Update attack gizmo timer
+        if (_showAttackGizmo)
+        {
+            _attackGizmoTimer -= Time.deltaTime;
+            if (_attackGizmoTimer <= 0)
+            {
+                _showAttackGizmo = false;
+            }
+        }
         
         // State machine
         switch (_currentState)
@@ -198,21 +213,41 @@ public class SimpleEnemy : MonoBehaviour
         // Wait for attack animation to complete
         yield return new WaitForSeconds(AttackDuration);
         
-        // Check if player is still in range and deal damage
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-        if (distanceToPlayer <= AttackRange)
+        // Reset attack state (damage is handled by Animation Event)
+        _isAttacking = false;
+        _currentState = EnemyState.Chasing;
+    }
+
+    // Animation Event Method - Call this from your attack animation
+    public void MeleeAttack()
+    {
+        if (player == null) return;
+        
+        // Calculate attack position based on facing direction
+        Vector2 attackDirection = _facingDirection;
+        Vector2 attackPosition = (Vector2)transform.position + attackDirection * (AttackRange * 0.7f);
+        
+        // Store for gizmo visualization
+        _attackGizmoPosition = attackPosition;
+        _showAttackGizmo = true;
+        _attackGizmoTimer = 0.7f; // Show for half a second
+        
+        // Check if player is in attack area
+        Collider2D hit = Physics2D.OverlapCircle(attackPosition, AttackRadius, PlayerLayer);
+        
+        if (hit != null && hit.CompareTag("Player"))
         {
-            // Try to damage player
-            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+            // Player got hit!
+            PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage((int)AttackDamage);
+                Debug.Log("Player hit by melee attack!");
             }
         }
         
-        // Reset attack state
-        _isAttacking = false;
-        _currentState = EnemyState.Chasing;
+        // Debug visualization
+        Debug.DrawRay(transform.position, attackDirection * AttackRange, Color.red, 1f);
     }
 
     void StopMoving()
@@ -234,14 +269,14 @@ public class SimpleEnemy : MonoBehaviour
         // Set movement direction for 4-directional animations
         if (_rb.linearVelocity.magnitude > 0.1f)
         {
-            _animator.SetFloat("MoveX", _lastMoveDirection.x);
-            _animator.SetFloat("MoveY", _lastMoveDirection.y);
+            _animator.SetFloat("FacingX", _lastMoveDirection.x);
+            _animator.SetFloat("FacingY", _lastMoveDirection.y);
         }
         else
         {
             // Use facing direction when idle
-            _animator.SetFloat("MoveX", _facingDirection.x);
-            _animator.SetFloat("MoveY", _facingDirection.y);
+            _animator.SetFloat("FacingX", _facingDirection.x);
+            _animator.SetFloat("FacingY", _facingDirection.y);
         }
         
         // Additional parameters for 4-way directional animations
@@ -354,5 +389,22 @@ public class SimpleEnemy : MonoBehaviour
         // Show facing direction
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(transform.position, _facingDirection * 1f);
+        
+        // Show attack area when attacking OR when gizmo is active
+        if (_isAttacking || _showAttackGizmo)
+        {
+            Vector2 attackPosition;
+            if (_showAttackGizmo)
+            {
+                attackPosition = _attackGizmoPosition;
+            }
+            else
+            {
+                attackPosition = (Vector2)transform.position + _facingDirection * (AttackRange * 0.7f);
+            }
+            
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(attackPosition, AttackRadius);
+        }
     }
 }
