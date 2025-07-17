@@ -234,6 +234,7 @@ MonoBehaviour:
   initialItems: []
   dropClip: {fileID: 0}
   audioSource: {fileID: 0}
+  equipmentController: {fileID: 0}
 --- !u!114 &6859392225035962051
 MonoBehaviour:
   m_ObjectHideFlags: 0

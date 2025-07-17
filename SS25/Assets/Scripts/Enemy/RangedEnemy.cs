@@ -15,80 +15,142 @@ public class RangedEnemy : MonoBehaviour
 
     private float _lastFireTime;
     private bool _isReloading = false;
+    private bool _isAttacking = false;  // New: track attack state
+    private Vector2 _attackDirection;   // Store attack direction for animation event
 
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
+    private Animator _animator;  // New: animator reference
     public Transform FirePoint;
-
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();  // New: get animator component
+        
+        // Auto-find player if not assigned
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+                player = playerObj.transform;
+        }
     }
 
     void FixedUpdate()
     {
-        if (player == null) return;
+        if (player == null || _rb == null) return;
 
         Vector2 direction = (player.position - transform.position);
         float distance = direction.magnitude;
         
         if (distance > DetectionRadius)
-            return; // Do nothing if outside detection range
+        {
+            _rb.linearVelocity = Vector2.zero;
+            return;
+        }
 
         direction.Normalize();
         UpdateFacingDirection(direction);
 
-        if (!_isReloading)
+        // Only move if not reloading AND not attacking
+        if (!_isReloading && !_isAttacking)
         {
             if (distance > DesiredDistance)
             {
-                rb.MovePosition(rb.position + direction * MoveSpeed * Time.fixedDeltaTime);
+                _rb.linearVelocity = direction * MoveSpeed;
             }
             else if (distance < RetreatDistance)
             {
-                rb.MovePosition(rb.position - direction * MoveSpeed * Time.fixedDeltaTime);
+                _rb.linearVelocity = -direction * MoveSpeed / 2;
             }
-
-            if (distance <= DesiredDistance && distance >= RetreatDistance)
+            else
             {
-                if (Time.time >= _lastFireTime + FireRate)
-                {
-                    Shoot(direction);
-                    _lastFireTime = Time.time;
-                    StartCoroutine(ReloadPause());
-                }
+                _rb.linearVelocity = Vector2.zero; // Stop when in optimal range
+            }
+        }
+        else
+        {
+            // Stop movement during attack or reload
+            _rb.linearVelocity = Vector2.zero;
+        }
 
+        // Shoot when in range and not currently attacking
+        if (distance <= DesiredDistance && distance >= RetreatDistance && !_isAttacking && !_isReloading)
+        {
+            if (Time.time >= _lastFireTime + FireRate)
+            {
+                StartAttack(direction);
+                _lastFireTime = Time.time;
             }
         }
     }
 
-void Shoot(Vector2 direction)
-{
-    // OPTION 1: Use enemy center (recommended)
-    Vector3 shootFromPosition = transform.position;
-    
-    // OPTION 2: Or if you want to use FirePoint, make sure it's world position
-    // Vector3 shootFromPosition = FirePoint.position;
-    
-    Vector3 playerWorldPos = player.position;
-    
-    Vector2 shootDirection = (playerWorldPos - shootFromPosition).normalized;
-    
-    // Calculate the rotation angle for the projectile
-    float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
-    Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-    
-    GameObject projectile = Instantiate(projectilePrefab, shootFromPosition, rotation);
-    Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+    void StartAttack(Vector2 direction)
+    {
+        _isAttacking = true;
+        
+        // Trigger the attack animation
+        if (_animator != null)
+        {
+            _animator.SetTrigger("Attack");
+        }
+        
+        // Start the attack sequence
+        StartCoroutine(AttackSequence(direction));
+    }
 
-    Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
-    projectileRb.linearVelocity = shootDirection * 5f;
-    
-    // Debug output
-    Debug.Log($"Shooting from: {shootFromPosition} towards: {playerWorldPos}");
-    Debug.Log($"Shoot direction: {shootDirection}");
-    Debug.DrawRay(shootFromPosition, shootDirection * 3f, Color.red, 2f);
-}
+    System.Collections.IEnumerator AttackSequence(Vector2 direction)
+    {
+        // Store the direction for the animation event to use
+        _attackDirection = direction;
+        
+        // Wait for the attack animation to complete
+        yield return new WaitForSeconds(GetAttackAnimationDuration());
+        
+        // Attack is complete, start reload
+        _isAttacking = false;
+        StartCoroutine(ReloadPause());
+    }
+
+    float GetAttackAnimationDuration()
+    {
+        // Method 1: Return a fixed duration
+        // return 0.5f; // Adjust based on your animation length
+        
+        // Method 2: Get duration from animator (more dynamic)
+        if (_animator != null)
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Attack")) // Replace "Attack" with your actual animation state name
+            {
+                return stateInfo.length;
+            }
+        }
+        
+        // Fallback duration
+        return 0.5f;
+    }
+
+    void Shoot(Vector2 direction)
+    {
+        Vector3 shootFromPosition = transform.position;
+        Vector3 playerWorldPos = player.position;
+        
+        Vector2 shootDirection = (playerWorldPos - shootFromPosition).normalized;
+        
+        float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        
+        GameObject projectile = Instantiate(projectilePrefab, shootFromPosition, rotation);
+        Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+
+        Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
+        projectileRb.linearVelocity = shootDirection * 5f;
+        
+        Debug.Log($"Shooting from: {shootFromPosition} towards: {playerWorldPos}");
+        Debug.Log($"Shoot direction: {shootDirection}");
+        Debug.DrawRay(shootFromPosition, shootDirection * 3f, Color.red, 2f);
+    }
 
     System.Collections.IEnumerator ReloadPause()
     {
@@ -99,14 +161,26 @@ void Shoot(Vector2 direction)
 
     void UpdateFacingDirection(Vector2 direction)
     {
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        // Remove automatic rotation - let blend tree handle direction
+        // Set blend tree parameters for animation direction
+        if (_animator != null)
         {
-            transform.rotation = Quaternion.Euler(0, 0, direction.x > 0 ? 0 : 180); // Right or Left
+            _animator.SetFloat("FacingX", direction.x);
+            _animator.SetFloat("FacingY", direction.y);
         }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 0, direction.y > 0 ? 90 : -90); // Up or Down
-        }
+    }
+
+    // Animation Event method - call this from your animation at the firing moment
+    public void FireProjectile()
+    {
+        Shoot(_attackDirection);
+    }
+
+    // Optional: Animation Event method - call this from your animation
+    public void AttackAnimationComplete()
+    {
+        _isAttacking = false;
+        StartCoroutine(ReloadPause());
     }
 
     void OnDrawGizmosSelected()
