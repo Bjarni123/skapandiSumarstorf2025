@@ -5,7 +5,7 @@ public class SimpleEnemy : MonoBehaviour
     [Header("Target & Detection")]
     public Transform player;
     public float DetectionRange = 10f;
-    public float AttackRange = 2f;
+    public float AttackRange = 1f;
     public float KeepDistance = 1.5f; // Stay this far from player
     
     [Header("Movement")]
@@ -162,27 +162,22 @@ public class SimpleEnemy : MonoBehaviour
     void UpdateFacingDirection(Vector2 moveDirection)
     {
         if (moveDirection.magnitude < 0.1f) return;
-        
-        // Store the last move direction for animation
-        _lastMoveDirection = moveDirection;
-        
-        // Determine 4-way facing direction
+    
+        // Store the normalized move direction for animation
+        _lastMoveDirection = moveDirection.normalized;
+    
+        // Determine 4-way facing direction (this should be discrete values)
         if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
         {
-            // Moving more horizontally
-            _facingDirection = moveDirection.x > 0 ? Vector2.right : Vector2.left;
+        // Moving more horizontally
+        _facingDirection = moveDirection.x > 0 ? Vector2.right : Vector2.left;
         }
         else
         {
-            // Moving more vertically
-            _facingDirection = moveDirection.y > 0 ? Vector2.up : Vector2.down;
+        // Moving more vertically
+        _facingDirection = moveDirection.y > 0 ? Vector2.up : Vector2.down;
         }
-        
-        // Optional: Flip sprite horizontally based on direction
-        if (_spriteRenderer != null)
-        {
-            _spriteRenderer.flipX = _facingDirection.x < 0;
-        }
+    
     }
 
     void StartAttack()
@@ -216,6 +211,27 @@ public class SimpleEnemy : MonoBehaviour
         // Reset attack state (damage is handled by Animation Event)
         _isAttacking = false;
         _currentState = EnemyState.Chasing;
+    }
+
+    System.Collections.IEnumerator ApplyKnockback(Vector2 direction)
+    {
+        _isKnockedBack = true;
+        _rb.linearVelocity = direction.normalized * KnockbackForce;
+        yield return new WaitForSeconds(KnockbackDuration);
+
+        float slowDownTime = 0.3f;
+        float elapsedTime = 0f;
+        Vector2 startVelocity = _rb.linearVelocity;
+        
+        while (elapsedTime < slowDownTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / slowDownTime;
+            _rb.linearVelocity = Vector2.Lerp(startVelocity, Vector2.zero, t);
+            yield return null;
+        }
+        
+        _isKnockedBack = false;
     }
 
     // Animation Event Method - Call this from your attack animation
@@ -278,10 +294,6 @@ public class SimpleEnemy : MonoBehaviour
             _animator.SetFloat("FacingX", _facingDirection.x);
             _animator.SetFloat("FacingY", _facingDirection.y);
         }
-        
-        // Additional parameters for 4-way directional animations
-        _animator.SetFloat("FacingX", _facingDirection.x);
-        _animator.SetFloat("FacingY", _facingDirection.y);
     }
 
     public void TakeDamage(float damage)
@@ -322,32 +334,6 @@ public class SimpleEnemy : MonoBehaviour
         {
             Die();
         }
-    }
-
-    System.Collections.IEnumerator ApplyKnockback(Vector2 direction)
-    {
-        _isKnockedBack = true;
-        
-        // Apply knockback force
-        _rb.linearVelocity = direction.normalized * KnockbackForce;
-        
-        // Wait for knockback duration
-        yield return new WaitForSeconds(KnockbackDuration);
-        
-        // Gradually slow down the knockback
-        float elapsedTime = 0f;
-        Vector2 startVelocity = _rb.linearVelocity;
-        
-        while (elapsedTime < 0.2f)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / 0.2f;
-            _rb.linearVelocity = Vector2.Lerp(startVelocity, Vector2.zero, t);
-            yield return null;
-        }
-        
-        _rb.linearVelocity = Vector2.zero;
-        _isKnockedBack = false;
     }
 
     void Die()
