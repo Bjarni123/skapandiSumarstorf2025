@@ -15,8 +15,8 @@ TagManager:
   - Enemy
   - EnemyProjectile
   - Ground
-  - 
-  - 
+  - Walls
+  - TreeTrunks
   - 
   - 
   - 
@@ -50,6 +50,9 @@ TagManager:
     locked: 0
   - name: Enemies
     uniqueID: 2613889641
+    locked: 0
+  - name: TreeTrunks
+    uniqueID: 203128685
     locked: 0
   - name: Projectiles
     uniqueID: 2588673793
