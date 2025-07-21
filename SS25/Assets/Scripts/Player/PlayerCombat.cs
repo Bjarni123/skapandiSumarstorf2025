@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.InputSystem.XR;
 
 
 /*
@@ -28,6 +29,14 @@ public class PlayerCombat : MonoBehaviour
     int comboCounter;
 
     private PlayerStateManager playerStateManager;
+
+
+    [Header("Hitbox Settings")]
+    [SerializeField] GameObject hitboxPrefab;
+    [SerializeField] float spawnDistance = 1f;
+    [SerializeField] float hitboxDuration = 0.2f;
+
+    GameObject spawnedHitbox;
 
     private void Awake()
     {
@@ -67,7 +76,6 @@ public class PlayerCombat : MonoBehaviour
     {
         if (Time.time - lastComboEnd > comboCD && comboCounter <= combo.Count)
         {
-            Debug.Log(comboCounter);
             CancelInvoke("EndCombo");
 
             if (Time.time - lastClickedTime >= attackCD)
@@ -98,5 +106,28 @@ public class PlayerCombat : MonoBehaviour
     {
         comboCounter = 0;
         lastComboEnd = Time.time;
+    }
+
+    public void SpawnHitPrefab()
+    {
+
+        float x = anim.GetFloat("LastMoveX");
+        float y = anim.GetFloat("LastMoveY");
+        Vector2 dir = new Vector2(x, y);
+
+        Vector3 worldPos = transform.position + (Vector3)dir * spawnDistance;
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion rot = Quaternion.Euler(0f, 0f, angle);
+
+        spawnedHitbox = Instantiate(hitboxPrefab, worldPos, rot);
+        PlayerSwing1 hb = spawnedHitbox.GetComponent<PlayerSwing1>();
+        hb.Initialize(1, dir);
+        Destroy(spawnedHitbox, hitboxDuration);
+    }
+
+    public void DeleteHitPrefab()
+    {
+        // delete the hitbox prefab here from SpawnHitPrefab
     }
 }
