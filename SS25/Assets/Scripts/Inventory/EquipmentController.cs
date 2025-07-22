@@ -71,6 +71,30 @@ public class EquipmentController : MonoBehaviour
         return true;
     }
 
+    private void Unequip(EquipmentSlotUI slotUI)
+    {
+        var item = slotUI.GetEquippedItem();
+        if (item == null)
+            return;
+
+        inventoryData.AddItem(item, 1);
+
+        // Clear from AgentWeapon if present
+        var player = GameObject.FindWithTag("Player"); // Or however you reference the player
+        if (player != null)
+        {
+            var agentWeapon = player.GetComponent<AgentWeapon>();
+            if (agentWeapon != null)
+            {
+                agentWeapon.ClearWeapon(item.equipmentType);
+            }
+        }
+
+        slotUI.ClearItem();
+        slotUI.HideBorder();
+        actionPanel.Toggle(false);
+    }
+
     private void HandleEquipmentSlotRightClick(EquipmentSlotUI slotUI)
     {
         if (slotUI.GetEquippedItem() == null)
@@ -80,18 +104,5 @@ public class EquipmentController : MonoBehaviour
         actionPanel.AddButton("Unequip", () => Unequip(slotUI));
         actionPanel.Toggle(true);
         actionPanel.transform.position = slotUI.transform.position;
-    }
-
-    private void Unequip(EquipmentSlotUI slotUI)
-    {
-        var item = slotUI.GetEquippedItem();
-        if (item == null)
-            return;
-
-        inventoryData.AddItem(item, 1);
-
-        slotUI.ClearItem();
-        slotUI.HideBorder();
-        actionPanel.Toggle(false);
     }
 }
