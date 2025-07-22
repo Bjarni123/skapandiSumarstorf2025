@@ -4,6 +4,7 @@ public class TreeInteractable : MonoBehaviour
 {
     public SpriteRenderer highlightRenderer;
     public float chopRange = 1.5f;
+    public Behaviour outlineEffect; // Reference to the Outline component
 
     private Transform player;
     private Animator playerAnimator;
@@ -12,29 +13,10 @@ public class TreeInteractable : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindWithTag("Player")?.transform;
-        if (player != null)
-            playerAnimator = player.GetComponent<Animator>();
-    }
+        highlightRenderer.enabled = false; // Start with highlight off
 
-    private void Update()
-    {
-        if (player == null || playerAnimator == null)
-        {
-            highlightRenderer.enabled = false;
-            return;
-        }
-
-        float dist = Vector2.Distance(player.position, transform.position);
-        if (dist <= chopRange && IsPlayerFacingTree())
-        {
-            highlightRenderer.enabled = true;
-            // Optionally: Register this as the "active" interactable for the player
-        }
-        else
-        {
-            highlightRenderer.enabled = false;
-        }
+        if (outlineEffect != null)
+            outlineEffect.enabled = false; // Start with outline off
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -44,6 +26,11 @@ public class TreeInteractable : MonoBehaviour
             highlightRenderer.enabled = true;
             playerInRange = true;
             playerObj = other.gameObject;
+
+            if (outlineEffect != null)
+            {
+                outlineEffect.enabled = true;
+            }
         }
     }
 
@@ -54,28 +41,12 @@ public class TreeInteractable : MonoBehaviour
             highlightRenderer.enabled = false;
             playerInRange = false;
             playerObj = null;
+
+            if (outlineEffect != null)
+            {
+                outlineEffect.enabled = false;
+            }
         }
-    }
-
-    public bool CanChop()
-    {
-        if (player == null || playerAnimator == null)
-            return false;
-
-        float dist = Vector2.Distance(player.position, transform.position);
-        return dist <= chopRange && IsPlayerFacingTree();
-    }
-
-    private bool IsPlayerFacingTree()
-    {
-        // Example: Use MoveX/MoveY as facing direction
-        float moveX = playerAnimator.GetFloat("MoveX");
-        float moveY = playerAnimator.GetFloat("MoveY");
-        Vector2 facing = new Vector2(moveX, moveY).normalized;
-        Vector2 toTree = ((Vector2)transform.position - (Vector2)player.position).normalized;
-
-        // Consider a dot product threshold for "facing"
-        return Vector2.Dot(facing, toTree) > 0.7f;
     }
 
     public void TryChop()
