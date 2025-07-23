@@ -18,7 +18,7 @@ TagManager:
   - Walls
   - Obstacles
   - Canopy
-  - 
+  - Trunks
   - 
   - 
   - 
@@ -45,14 +45,17 @@ TagManager:
   - name: Walls
     uniqueID: 173568745
     locked: 0
-  - name: Player
-    uniqueID: 3356231489
-    locked: 0
   - name: Enemies
     uniqueID: 2613889641
     locked: 0
   - name: Obstacles
     uniqueID: 203128685
+    locked: 0
+  - name: Player
+    uniqueID: 3356231489
+    locked: 0
+  - name: Trunks
+    uniqueID: 985342645
     locked: 0
   - name: Projectiles
     uniqueID: 2588673793
