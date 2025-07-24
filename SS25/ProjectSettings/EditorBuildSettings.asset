@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NoiMainMenu.unity
     guid: 6fed502d49217eb41a5da08905ffc6ae
   - enabled: 1
+    path: Assets/Scenes/NoiMap.unity
+    guid: 796a7720727ad094f95d5d9469882286
+  - enabled: 0
     path: Assets/Scenes/BjarniDevelopment.unity
     guid: e8539e9599d03004d9913b574e7e327f
   m_configObjects:
