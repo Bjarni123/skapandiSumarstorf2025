@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animatorOV: {fileID: 22100000, guid: 9f54d9e40b361b24dbb6d850ce02846e, type: 2}
   damage: 0
+  swishPrefab: {fileID: 3408676640985098021, guid: 0e7d1fd7e3942b9479225f59d8f78dde, type: 3}

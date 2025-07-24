@@ -120,14 +120,13 @@ public class PlayerCombat : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.Euler(0f, 0f, angle);
 
-        spawnedHitbox = Instantiate(hitboxPrefab, worldPos, rot);
-        PlayerSwing1 hb = spawnedHitbox.GetComponent<PlayerSwing1>();
-        hb.Initialize(1, dir);
-        Destroy(spawnedHitbox, hitboxDuration);
-    }
+        GameObject swishPrefab = combo[comboCounter].swishPrefab;
 
-    public void DeleteHitPrefab()
-    {
-        // delete the hitbox prefab here from SpawnHitPrefab
+        spawnedHitbox = Instantiate(swishPrefab, worldPos, rot);
+        PlayerSwing1 hb = spawnedHitbox.GetComponent<PlayerSwing1>();
+
+        float damage = combo[comboCounter].damage;
+
+        hb.Initialize(damage, dir);
     }
 }
