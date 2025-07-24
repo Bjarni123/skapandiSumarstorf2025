@@ -141,33 +141,37 @@ namespace Inventory
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.IsEmpty)
                 return;
-            
-            IItemAction itemAction = inventoryItem.item as IItemAction;
+
+            var item = inventoryItem.item;
+
+            List<(string, Action)> actions = new List<(string, Action)>();
+
+            // If the item has a custom action
+            IItemAction itemAction = item as IItemAction;
             if (itemAction != null)
             {
-                inventoryUI.ShowItemAction(itemIndex);
-                inventoryUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+                actions.Add((itemAction.ActionName, () => PerformAction(itemIndex)));
             }
-            
-            IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
+
+            // If the item is destroyable (can be dropped)
+            IDestroyableItem destroyableItem = item as IDestroyableItem;
             if (destroyableItem != null)
             {
                 if (inventoryItem.quantity == 1)
                 {
-                    inventoryUI.SetActions(new List<(string, Action)>
-                    {
-                        (itemAction.ActionName, () => PerformAction(itemIndex)),
-                        ("Drop", () => DropItem(itemIndex, 1))
-                    });
+                    actions.Add(("Drop", () => DropItem(itemIndex, 1)));
                 }
                 else
                 {
-                    inventoryUI.SetActions(new List<(string, Action)>
-                    {
-                        (itemAction.ActionName, () => PerformAction(itemIndex)),
-                        ("Drop", () => ShowDropOptions(itemIndex, inventoryItem.quantity))
-                    });
+                    actions.Add(("Drop", () => ShowDropOptions(itemIndex, inventoryItem.quantity)));
                 }
+            }
+
+            // Only show the action panel if there are actions
+            if (actions.Count > 0)
+            {
+                inventoryUI.SetActions(actions);
+                inventoryUI.ShowItemAction(itemIndex);
             }
         }
 

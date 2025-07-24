@@ -107,9 +107,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -938735807
-  m_SortingLayer: -3
+  m_SortingLayer: -4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4334783836991956000, guid: a74413cbba2066846b98bba4463a7813, type: 3}
+  m_Sprite: {fileID: 4647603237904366515, guid: 391c90e628e626b40a4d6da97f221450, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -267,6 +267,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
+  axe: {fileID: 0}
+  axeState: []
+  pickaxe: {fileID: 0}
+  pickaxeState: []
   inventoryData: {fileID: 11400000, guid: 5b8f05a9862cc3f4b84c1f0204adf7f7, type: 2}
   parametersToModify: []
   itemCurrentState: []
@@ -304,17 +308,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0084427, y: -0.2499046}
+  m_Offset: {x: 0.0084427, y: 0.039923847}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.9375, y: 1.4375}
+    pivot: {x: 0.512227, y: 0.35137463}
+    oldSize: {x: 1.0833334, y: 1.3333334}
     newSize: {x: 0.9375, y: 1.4375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.630185, y: 0.56621104}
+  m_Size: {x: 0.630185, y: 1.145868}
   m_EdgeRadius: 0
 --- !u!114 &7196362959825420135
 MonoBehaviour:
