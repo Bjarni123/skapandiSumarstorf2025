@@ -34,7 +34,6 @@ public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
     {
         if (iconImageEquip == null)
         {
-            Debug.LogError("EquipmentSlotUI: iconImage is not assigned!");
             return false;
         }
 
@@ -46,7 +45,6 @@ public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
 
         if (item.equipmentType != acceptedType)
         {
-            Debug.LogWarning($"Can't equip {item.equipmentType} in {acceptedType} slot!");
             return false;
         }
 
@@ -54,7 +52,6 @@ public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
         iconImageEquip.sprite = item.ItemImage;
         iconImageEquip.enabled = true;
         iconImagePreview.enabled = false;
-        Debug.Log($"iconImage assigned: {iconImageEquip != null}, sprite: {item.ItemImage}");
         return true;
     }
 
@@ -62,7 +59,6 @@ public class EquipmentSlotUI : MonoBehaviour, IPointerClickHandler
     {
         if (iconImageEquip == null)
         {
-            Debug.LogError("iconImage is not assigned in EquipmentSlotUI!");
             return;
         }
         equippedItem = null;
