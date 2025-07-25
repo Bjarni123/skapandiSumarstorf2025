@@ -21,4 +21,8 @@ MonoBehaviour:
   <WorldPrefab>k__BackingField: {fileID: 7674342965255093949, guid: dd5373e97ae9e974293ad1c54246b204, type: 3}
   <actionSFX>k__BackingField: {fileID: 0}
   equipmentType: 2
-  parameters: []
+  parameters:
+  - itemParameter: {fileID: 11400000, guid: 615691d16a588e847be91d65b04d36af, type: 2}
+    value: 1
+  - itemParameter: {fileID: 11400000, guid: 2b5aa9f1b9401d04bbeeb7c710f393ca, type: 2}
+    value: 0
