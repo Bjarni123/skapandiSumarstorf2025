@@ -107,10 +107,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -938735807
   m_SortingLayer: -4
-  m_SortingLayer: -4
   m_SortingOrder: 0
   m_Sprite: {fileID: 4647603237904366515, guid: 391c90e628e626b40a4d6da97f221450, type: 3}
-  m_Sprite: {fileID: 6193041505525202915, guid: 62436d2ca0b33f24ea8403bb0f99c449, type: 3}
   m_Sprite: {fileID: 6193041505525202915, guid: 62436d2ca0b33f24ea8403bb0f99c449, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -291,8 +289,6 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.512227, y: 0.35137463}
     oldSize: {x: 1.0833334, y: 1.3333334}
-    pivot: {x: 0.53823835, y: 0.34573787}
-    oldSize: {x: 1.1666666, y: 1.3333334}
     pivot: {x: 0.53823835, y: 0.34573787}
     oldSize: {x: 1.1666666, y: 1.3333334}
     newSize: {x: 0.9375, y: 1.4375}
