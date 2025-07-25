@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed6b2fdd4c457343b62df17aa404aec, type: 3}
+  m_Name: StarterHulduDialogue
+  m_EditorClassIdentifier: 
+  npcName: Huldufolk
+  npcSprite: {fileID: 5426796496578533647, guid: 8ce5321fa538d814f9e8ea966018d9b7, type: 3}
+  autoProgressLines: 0
+  autoProgressDelay: 2
+  talkingSound: {fileID: 0}
+  soundPitch: 1
+  soundVolume: 0.5
+  firstTimeDialogue:
+  - text: Hello there young adventurer!
+    typeSpeed: 0.05
+    customSound: {fileID: 0}
+    customPitch: 0
+    pauseAfterLine: 0
+    pauseDuration: 0
+  - text: We need your help to repair our heart!
+    typeSpeed: 0.05
+    customSound: {fileID: 0}
+    customPitch: 0
+    pauseAfterLine: 0
+    pauseDuration: 0
+  repeatDialogue: []
+  hasConditionalDialogue: 0
+  conditionalDialogue: []
+  conditionDescription: Describe when this dialogue should play
