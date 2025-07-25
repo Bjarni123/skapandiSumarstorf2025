@@ -19,22 +19,54 @@ public class TreeInteractable : Interactable
     [SerializeField]
     private float fadeDuration = 0.5f;     // Optional fade time
 
+    [SerializeField]
+    private InteractionProgressBar progressBar; // Reference to the interaction progress bar
+
+    [SerializeField]
+    private float chopTime = 2f;
+
     private bool isChopped = false;
 
     public override void Interact()
     {
-        if (isChopped == true)
+        if (isChopped || isChopping)
         {
-            Debug.Log("Tree already chopped!");
+            Debug.Log("Cannot chop right now.");
             return;
         }
-        StartCoroutine(RegrowTreeAfterDelay());
 
+        if (!isPlayerInRange)
+        {
+            Debug.Log("You're not close enough to chop.");
+            return;
+        }
+
+        isChopping = true;
+
+        progressBar.StartBar(chopTime, OnChopComplete);
+
+        // TODO: drop wood based on tool, play animation, destroy tree
+    }
+
+    protected override void CancelChop()
+    {
+        isChopping = false;
+        progressBar.CancelBar();
+        Debug.Log("Chop cancelled: player walked away.");
+    }
+
+    private void OnChopComplete()
+    {
+        if (isChopped)
+            return;
+
+        isChopping = false;
         isChopped = true;
 
-        fullTree.SetActive(false);
-        choppedTrunk.SetActive(true);
-        
+        Debug.Log("Tree chopped!");
+        StartCoroutine(FadeOutFullTree());
+        StartCoroutine(RegrowTreeAfterDelay());
+
         for (int i = 0; i < 3; i++)
         {
             float xOffset = Random.Range(0f, 1f);
@@ -42,12 +74,8 @@ public class TreeInteractable : Interactable
             GameObject droppedLog = Instantiate(logPrefab, spawnPos, Quaternion.identity);
 
             float verticalDistance = Random.Range(0.5f, 0.8f);
-
             StartCoroutine(SlideLogDown(droppedLog, verticalDistance, 0.5f));
         }
-        Debug.Log("Tree chopped!");
-
-        // TODO: drop wood based on tool, play animation, destroy tree
     }
 
     private IEnumerator RegrowTreeAfterDelay()
@@ -64,6 +92,41 @@ public class TreeInteractable : Interactable
         isChopped = false;
 
         Debug.Log("Tree has regrown!");
+    }
+
+    private IEnumerator FadeOutFullTree()
+    {
+        choppedTrunk.SetActive(true);
+
+        // Get all SpriteRenderers inside the fullTree object
+        SpriteRenderer[] renderers = fullTree.GetComponentsInChildren<SpriteRenderer>();
+
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = 1f - (elapsed / fadeDuration);
+
+            foreach (var sr in renderers)
+            {
+                Color color = sr.color;
+                color.a = alpha;
+                sr.color = color;
+            }
+
+            yield return null;
+        }
+
+        fullTree.SetActive(false);
+        
+        // Reset fullTree sprites to opaque so it's ready when regrown
+        foreach (var sr in renderers)
+        {
+            Color color = sr.color;
+            color.a = 1f;
+            sr.color = color;
+        }
     }
 
     private IEnumerator SlideLogDown(GameObject log, float distance, float duration)
