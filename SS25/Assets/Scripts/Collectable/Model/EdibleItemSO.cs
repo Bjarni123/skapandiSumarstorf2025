@@ -20,12 +20,10 @@ namespace Inventory.Model
             {
                 if (data == null)
                 {
-                    Debug.LogError("ModifierData is null!");
                     continue;
                 }
                 if (data.statModifier == null)
                 {
-                    Debug.LogError("statModifier is null!");
                     continue;
                 }
                 data.statModifier.AffectCharacter(character, data.value);
