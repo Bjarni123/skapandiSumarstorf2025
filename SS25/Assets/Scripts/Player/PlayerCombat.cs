@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.InputSystem.XR;
+using Unity.VisualScripting;
 
 
 /*
@@ -118,11 +119,44 @@ public class PlayerCombat : MonoBehaviour
         Vector3 worldPos = transform.position + (Vector3)dir * spawnDistance;
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion rot = Quaternion.Euler(0f, 0f, angle);
+
+        float x_rot;
+
+        if (x > 0)
+        {
+            x_rot = 0f;
+        }
+        else
+        {
+            x_rot = 180f;
+        }
+
+        Vector3 spawnOffset = Vector3.zero;
+
+        if (x > 0)
+        {
+            spawnOffset = new Vector3(-0.5f, -0.8f, 0);
+        }
+        else if (x < 0)
+        {
+            spawnOffset = new Vector3(0.5f, -0.8f, 0);
+        }
+        else if (y > 0)
+        {
+            spawnOffset = new Vector3(-1f, -0.4f, 0);
+        }
+        else
+        {
+            spawnOffset = new Vector3(1f, 0.4f, 0);
+        }
+
+
+
+        Quaternion rot = Quaternion.Euler(x_rot, 180f, angle);
 
         GameObject swishPrefab = combo[comboCounter].swishPrefab;
 
-        spawnedHitbox = Instantiate(swishPrefab, worldPos, rot);
+        spawnedHitbox = Instantiate(swishPrefab, worldPos + spawnOffset, rot);
         PlayerSwing1 hb = spawnedHitbox.GetComponent<PlayerSwing1>();
 
         float damage = combo[comboCounter].damage;

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AutoAttack3
   m_EditorClassIdentifier: 
   animatorOV: {fileID: 22100000, guid: 31b987019f286a545a28563c3653fe52, type: 2}
-  damage: 0
-  swishPrefab: {fileID: 3408676640985098021, guid: 0e7d1fd7e3942b9479225f59d8f78dde, type: 3}
+  damage: 120
+  swishPrefab: {fileID: 4627564538467339052, guid: eb36fd86111b77d4ea1b841fac8cfec7, type: 3}
