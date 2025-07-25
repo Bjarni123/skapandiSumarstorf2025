@@ -30,49 +30,28 @@ public class EquipmentController : MonoBehaviour
 
     public bool Equip(EquippableItemsSO item, GameObject player, List<ItemParameter> itemState)
     {
-        Debug.Log("Equip: Start");
-        if (item == null)
-        {
-            Debug.LogError("Equip: item is null!");
+        if (item == null || slotMap == null)
             return false;
-        }
-        if (slotMap == null)
-        {
-            Debug.LogError("Equip: slotMap is null!");
+
+        if (!slotMap.TryGetValue(item.equipmentType, out var slotUI) || slotUI == null)
             return false;
-        }
-        if (!slotMap.TryGetValue(item.equipmentType, out var slotUI))
+
+        // Check if something is already equipped
+        var currentlyEquipped = slotUI.GetEquippedItem();
+        if (currentlyEquipped != null)
         {
-            Debug.LogError($"Equip: No slot found for type {item.equipmentType}");
-            return false;
+            // Add the currently equipped item back to inventory
+            inventoryData.AddItem(currentlyEquipped, 1);
         }
-        if (slotUI == null)
-        {
-            Debug.LogError("Equip: slotUI is null!");
-            return false;
-        }
-        Debug.Log("Equip: slotUI found");
 
         bool set = false;
         try
         {
             set = slotUI.SetItem(item);
-            Debug.Log($"Equip: slotUI.SetItem returned {set}");
         }
         catch (Exception ex)
         {
             Debug.LogError($"Equip: Exception in slotUI.SetItem: {ex}");
-            return false;
-        }
-
-        // Set in UI again (if needed)
-        try
-        {
-            slotUI.SetItem(item);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"Equip: Exception in slotUI.SetItem (second call): {ex}");
             return false;
         }
 
@@ -89,9 +68,31 @@ public class EquipmentController : MonoBehaviour
                 Debug.LogError($"Equip: Exception in agentWeapon.SetWeapon: {ex}");
             }
         }
-
-        Debug.Log("Equip: End");
         return true;
+    }
+
+    private void Unequip(EquipmentSlotUI slotUI)
+    {
+        var item = slotUI.GetEquippedItem();
+        if (item == null)
+            return;
+
+        inventoryData.AddItem(item, 1);
+
+        // Clear from AgentWeapon if present
+        var player = GameObject.FindWithTag("Player"); // Or however you reference the player
+        if (player != null)
+        {
+            var agentWeapon = player.GetComponent<AgentWeapon>();
+            if (agentWeapon != null)
+            {
+                agentWeapon.ClearWeapon(item.equipmentType);
+            }
+        }
+
+        slotUI.ClearItem();
+        slotUI.HideBorder();
+        actionPanel.Toggle(false);
     }
 
     private void HandleEquipmentSlotRightClick(EquipmentSlotUI slotUI)
@@ -103,18 +104,5 @@ public class EquipmentController : MonoBehaviour
         actionPanel.AddButton("Unequip", () => Unequip(slotUI));
         actionPanel.Toggle(true);
         actionPanel.transform.position = slotUI.transform.position;
-    }
-
-    private void Unequip(EquipmentSlotUI slotUI)
-    {
-        var item = slotUI.GetEquippedItem();
-        if (item == null)
-            return;
-
-        inventoryData.AddItem(item, 1);
-
-        slotUI.ClearItem();
-        slotUI.HideBorder();
-        actionPanel.Toggle(false);
     }
 }
