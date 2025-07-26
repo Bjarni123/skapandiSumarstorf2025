@@ -19,8 +19,8 @@ public class TreeInteractable : Interactable
     [SerializeField]
     private float fadeDuration = 0.5f;     // Optional fade time
 
-    [SerializeField]
-    private InteractionProgressBar progressBar; // Reference to the interaction progress bar
+    // [SerializeField]
+    // private InteractionProgressBar progressBar; // Reference to the interaction progress bar
 
     [SerializeField]
     private float chopTime = 2f;
@@ -43,7 +43,7 @@ public class TreeInteractable : Interactable
 
         isChopping = true;
 
-        progressBar.StartBar(chopTime, OnChopComplete);
+        // progressBar.StartBar(chopTime, OnChopComplete);
 
         // TODO: drop wood based on tool, play animation, destroy tree
     }
@@ -51,7 +51,7 @@ public class TreeInteractable : Interactable
     protected override void CancelChop()
     {
         isChopping = false;
-        progressBar.CancelBar();
+        // progressBar.CancelBar();
         Debug.Log("Chop cancelled: player walked away.");
     }
 
