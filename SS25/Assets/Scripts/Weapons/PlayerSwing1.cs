@@ -11,6 +11,26 @@ public class PlayerSwing1 : MonoBehaviour
     [HideInInspector] public float damage = 1f;
     [HideInInspector] public Vector2 knockBackDir = Vector2.zero;
 
+
+    private Animator animator;
+    private float animationLength;
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        if (animator != null && animator.runtimeAnimatorController != null)
+        {
+            // Get length of first animation clip
+            animationLength = animator.GetCurrentAnimatorStateInfo(0).length;
+            Destroy(gameObject, animationLength);
+        }
+        else
+        {
+            Debug.LogWarning("Animator or controller missing. Destroying immediately.");
+            Destroy(gameObject); // Fallback if no animator
+        }
+    }
+
     void Reset()
     {
         // Make sure your collider is a trigger

@@ -6,7 +6,9 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField]
     private GameObject outlineSprite;
 
-    private bool isPlayerInside = false;
+    public bool isPlayerInRange = false;
+
+    protected bool isChopping = false;
 
     protected virtual void Start()
     {
@@ -18,7 +20,7 @@ public abstract class Interactable : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerInside && Mouse.current.rightButton.wasPressedThisFrame)
+        if (isPlayerInRange && Mouse.current.rightButton.wasPressedThisFrame)
         {
             Interact(); // Calls the overridden method in TreeInteractable
         }
@@ -28,7 +30,7 @@ public abstract class Interactable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInside = true;
+            isPlayerInRange = true;
             SetOutline(true);
         }
     }
@@ -37,7 +39,13 @@ public abstract class Interactable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInside = false;
+            isPlayerInRange = false;
+
+            if (isChopping)
+            {
+                CancelChop();
+            }
+
             SetOutline(false);
         }
     }
@@ -49,9 +57,10 @@ public abstract class Interactable : MonoBehaviour
             outlineSprite.SetActive(on);
     }
 
-    public bool IsPlayerInRange() => isPlayerInside;
+    public bool IsPlayerInRange() => isPlayerInRange;
 
     public abstract void Interact();
 
+    protected virtual void CancelChop() { }
 
 }

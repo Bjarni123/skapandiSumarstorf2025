@@ -311,6 +311,7 @@ public class SimpleEnemy : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Die();
+            
         }
     }
 
