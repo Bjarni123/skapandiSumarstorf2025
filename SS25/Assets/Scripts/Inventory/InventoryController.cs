@@ -65,7 +65,13 @@ namespace Inventory
             {
                 if (item.IsEmpty)
                     continue;
-                inventoryData.AddItem(item);
+
+                // Ensure default state is set
+                var itemState = item.itemState != null && item.itemState.Count > 0
+                    ? item.itemState
+                    : new List<ItemParameter>(item.item.DefaultParametersList);
+
+                inventoryData.AddItem(item.item, item.quantity, itemState);
             }
         }
 
@@ -115,13 +121,24 @@ namespace Inventory
             StringBuilder sb = new StringBuilder();
             sb.Append(inventoryItem.item.Description);
             sb.AppendLine();
-            for (int i = 0; i < inventoryItem.itemState.Count; i++)
+
+            var current = inventoryItem.itemState;
+            var defaults = inventoryItem.item.DefaultParametersList;
+
+            for (int i = 0; i < current.Count; i++)
             {
-                sb.Append($"{inventoryItem.itemState[i].itemParameter.ParameterName} : {inventoryItem.itemState[i].value} / {inventoryItem.item.DefaultParametersList[i].value}");
+                string paramName = current[i].itemParameter?.ParameterName ?? "Unknown";
+                float currentValue = current[i].value;
+
+                float defaultValue = (i < defaults.Count) ? defaults[i].value : 0;
+
+                sb.Append($"{paramName} : {currentValue} / {defaultValue}");
                 sb.AppendLine();
             }
+
             return sb.ToString();
         }
+
 
         private void HandleSwapItems(int itemIndex1, int itemIndex2)
         {
@@ -225,6 +242,14 @@ namespace Inventory
                     return;
 
                 var equippable = inventoryItem.item as EquippableItemsSO;
+
+                Debug.Log($"Equipping {equippable.name} with parameters:");
+                foreach (var p in inventoryItem.itemState)
+                {
+                    Debug.Log($" - {p.itemParameter?.ParameterName} = {p.value}");
+                }
+
+
                 if (equippable != null)
                 {
                     bool equipped = equipmentController.Equip(equippable, gameObject, inventoryItem.itemState);

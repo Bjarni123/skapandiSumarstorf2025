@@ -22,28 +22,29 @@ public class TreeInteractable : Interactable
     [SerializeField]
     private InteractionProgressBar progressBar; // Reference to the interaction progress bar
 
-    [SerializeField]
-    private float chopTime = 2f;
-
     private bool isChopped = false;
 
     public override void Interact()
     {
-        if (isChopped || isChopping)
+        if (isChopped || isChopping || !isPlayerInRange)
+            return;
+
+        // Get equipped axe from player
+        var player = GameObject.FindWithTag("Player");
+        var weapon = player?.GetComponent<AgentWeapon>();
+        var axe = weapon?.GetAxe();
+
+        if (axe == null)
         {
-            Debug.Log("Cannot chop right now.");
+            Debug.Log("You need an axe to chop this tree!");
             return;
         }
 
-        if (!isPlayerInRange)
-        {
-            Debug.Log("You're not close enough to chop.");
-            return;
-        }
+        float chopSpeed = weapon.GetAxeParameter("Chop Speed");
 
         isChopping = true;
 
-        progressBar.StartBar(chopTime, OnChopComplete);
+        progressBar.StartBar(chopSpeed, OnChopComplete);
 
         // TODO: drop wood based on tool, play animation, destroy tree
     }
@@ -67,7 +68,16 @@ public class TreeInteractable : Interactable
         StartCoroutine(FadeOutFullTree());
         StartCoroutine(RegrowTreeAfterDelay());
 
-        for (int i = 0; i < 3; i++)
+        // Drop multiplier
+        var player = GameObject.FindWithTag("Player");
+        var weapon = player?.GetComponent<AgentWeapon>();
+
+        int dropMin = Mathf.RoundToInt(weapon?.GetAxeParameter("Drop Min") ?? 3);
+        int dropMax = Mathf.RoundToInt(weapon?.GetAxeParameter("Drop Max") ?? 3);
+
+        int logAmount = Random.Range(dropMin, dropMax + 1);
+
+        for (int i = 0; i < logAmount; i++)
         {
             float xOffset = Random.Range(0f, 1f);
             Vector3 spawnPos = transform.position + new Vector3(xOffset, 0f, 0f);
