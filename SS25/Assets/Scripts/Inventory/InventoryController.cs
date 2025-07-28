@@ -243,7 +243,11 @@ namespace Inventory
 
                 var equippable = inventoryItem.item as EquippableItemsSO;
 
-                Debug.Log($"Equipping {equippable.name} with parameters:");
+                if (equippable != null)
+                {
+                    Debug.Log($"Equipping {equippable.name} with parameters:");
+                }
+
                 foreach (var p in inventoryItem.itemState)
                 {
                     Debug.Log($" - {p.itemParameter?.ParameterName} = {p.value}");
