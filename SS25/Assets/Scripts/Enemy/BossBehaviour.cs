@@ -147,10 +147,22 @@ public class BossBehaviour : MonoBehaviour
 
     public void TakeDamage(int dmg_amount)
     {
-        return;
+        currentHealth -= dmg_amount;
     }
 
     public void TakeDamage(int dmg_amount, Vector2 knockbackDir)
+    {
+        TakeDamage(dmg_amount);
+        TakeKnockback(knockbackDir);
+    }
+    
+    private void TakeKnockback(Vector2 knockbackDir)
+    {
+        return;
+    }
+
+
+    private void Die()
     {
         return;
     }
