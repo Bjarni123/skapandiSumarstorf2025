@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6ed39bcabd6584ba99b827f9fc3d86, type: 3}
   m_Name: DropMin
   m_EditorClassIdentifier: 
-  <ParameterName>k__BackingField: 
+  <ParameterName>k__BackingField: Drop Min
