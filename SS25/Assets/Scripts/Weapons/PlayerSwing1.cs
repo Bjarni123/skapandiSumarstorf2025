@@ -60,7 +60,7 @@ public class PlayerSwing1 : MonoBehaviour
         var enemyHealth = go.GetComponent<SimpleEnemy>();
         if (enemyHealth != null)
         {
-            Debug.Log("Enemy should take dmg");
+            Debug.Log($"{go.name} takes {damage} damage from player.");
             enemyHealth.TakeDamage(damage, knockBackDir);
             hitEnemies.Add(go);
         }
