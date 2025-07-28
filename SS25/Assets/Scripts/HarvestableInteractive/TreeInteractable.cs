@@ -13,11 +13,10 @@ public class TreeInteractable : Interactable
     [SerializeField]
     private GameObject logPrefab;     // The log that will be dropped
 
-    [SerializeField] 
-    private float regrowDelay = 5f;
+    private float regrowDelay = 120f;
 
     [SerializeField]
-    private float fadeDuration = 0.5f;     // Optional fade time
+    private float fadeDuration = 0.5f;
 
     [SerializeField]
     private InteractionProgressBar progressBar; // Reference to the interaction progress bar
@@ -141,11 +140,16 @@ public class TreeInteractable : Interactable
 
     private IEnumerator SlideLogDown(GameObject log, float distance, float duration)
     {
+        if (log == null) yield break;
+
         Vector3 startPos = log.transform.position;
         Vector3 endPos = startPos + new Vector3(0, -distance, 0);
         float elapsed = 0f;
+
         while (elapsed < duration)
         {
+            if (log == null) yield break; // Check if log still exists
+
             float t = elapsed / duration;
             // Ease out: fast then slow
             t = 1f - Mathf.Pow(1f - t, 2f);
@@ -153,7 +157,9 @@ public class TreeInteractable : Interactable
             elapsed += Time.deltaTime;
             yield return null;
         }
-        log.transform.position = endPos;
+
+        if (log != null)
+            log.transform.position = endPos;
     }
 }
 
