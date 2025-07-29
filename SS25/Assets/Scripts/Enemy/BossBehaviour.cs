@@ -19,6 +19,8 @@ public class BossBehaviour : MonoBehaviour
     private Rigidbody2D rb;
 
     [Header("Attacking")]
+    [SerializeField] GameObject Attack1Prefab;
+    [SerializeField] GameObject Attack2Prefab;
     [SerializeField] float attackRange = 2f;
     [SerializeField] float attackCD = 1f;
     public Transform player;
@@ -220,6 +222,43 @@ public class BossBehaviour : MonoBehaviour
         AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
 
         return !(state.IsName("Boss1_Idle") || state.IsName("Boss1_Walk"));
+    }
+
+    public void SpawnAttack1Prefab()
+    {
+        // 2.5 0.8
+        Vector2 currPos = rb.position;
+
+        float xDir;
+        if (MovementDirection.x > 0)
+        {
+            xDir = 2.5f;
+        }
+        else
+        {
+            xDir = -2.5f;
+        }
+
+        Vector2 spawnPos = currPos + new Vector2(xDir, 0.8f);
+        Instantiate(Attack1Prefab, spawnPos, Quaternion.identity);
+    }
+
+    public void SpawnAttack2Prefab()
+    {
+        // 1.2 0.3
+        Vector2 currPos = rb.position;
+        float xDir;
+        if (MovementDirection.x > 0)
+        {
+            xDir = 1.6f;
+        }
+        else
+        {
+            xDir = -1.6f;
+        }
+
+        Vector2 spawnPos = currPos + new Vector2(xDir, 0.5f);
+        Instantiate(Attack2Prefab, spawnPos, Quaternion.identity);
     }
 
 
