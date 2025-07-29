@@ -369,6 +369,7 @@ public class SimpleEnemy : MonoBehaviour
 
     private IEnumerator FlashRoutine()
     {
+
         sr.color = Color.red;
         yield return new WaitForSeconds(flashDuration);
         sr.color = originalColor;
