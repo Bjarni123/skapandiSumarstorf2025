@@ -190,11 +190,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rockPrefab: {fileID: 5138267630237229032, guid: f5955f55c79ee5441ab3b333febd9858, type: 3}
-  abilityCD: 10
+  abilityCD: 15
   abilityRadius: 10
   numberOfRocks: 8
-  attackRange: 5
-  attackCD: 2.5
+  Attack1Prefab: {fileID: 3263598504711959360, guid: fc113d1650dbbda4b99a2adc623e13ea, type: 3}
+  Attack2Prefab: {fileID: 5714253877787408078, guid: ce4358fcfc753e744af897b85036f80f, type: 3}
+  attackRange: 4
+  attackCD: 3
   player: {fileID: 0}
   DetectionRadius: 12
   MoveSpeed: 2

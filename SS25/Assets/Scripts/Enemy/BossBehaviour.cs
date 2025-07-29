@@ -83,10 +83,9 @@ public class BossBehaviour : MonoBehaviour
     {
         if (IsPerformingAction() || !CanSeePlayer())
         {
-            if (isKnockedback)
+            if (!isKnockedback)
             {
-                return;
-                // rb.linearVelocity = Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
             }
             return;
         }
@@ -114,6 +113,7 @@ public class BossBehaviour : MonoBehaviour
 
     void Attack()
     {
+        
         lastAttackTime = Time.time;
         if (Random.Range(1, 3) == 1)
         {
