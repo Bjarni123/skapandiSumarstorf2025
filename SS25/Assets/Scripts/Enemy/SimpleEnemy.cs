@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SimpleEnemy : MonoBehaviour
+public class SimpleEnemy : MonoBehaviour, IEnemy
 {
     [Header("Target & Detection")]
     public Transform player;
@@ -38,6 +38,7 @@ public class SimpleEnemy : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    private EnemyHealthBar _healthBar;
     
     // Direction tracking for 4-way movement
     private Vector2 _lastMoveDirection;
@@ -59,11 +60,13 @@ public class SimpleEnemy : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        
+        _healthBar = GetComponentInChildren<EnemyHealthBar>();
+
         // Initialize
         _currentHealth = MaxHealth;
         _facingDirection = Vector2.down; // Default facing direction
-        
+        _healthBar.SetHealth(_currentHealth, MaxHealth);
+
         // Lock rotation to keep enemy upright
         if (_rb != null)
         {
@@ -296,32 +299,14 @@ public class SimpleEnemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
-    {
-        if (_currentState == EnemyState.Dead) return;
-        
-        _currentHealth -= damage;
-        
-        // Trigger damage animation
-        if (_animator != null)
-        {
-            _animator.SetTrigger("TakeDamage");
-        }
-        
-        if (_currentHealth <= 0)
-        {
-            Die();
-            
-        }
-    }
-
-    // Overloaded method to include knockback direction
+ 
     public void TakeDamage(float damage, Vector2 knockbackDirection)
     {
         if (_currentState == EnemyState.Dead) return;
         
         _currentHealth -= damage;
-        
+        _healthBar.SetHealth(_currentHealth, MaxHealth);
+
         // Apply knockback
         StartCoroutine(ApplyKnockback(knockbackDirection));
         

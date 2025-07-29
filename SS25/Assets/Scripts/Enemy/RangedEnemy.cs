@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RangedEnemy : MonoBehaviour
+public class RangedEnemy : MonoBehaviour, IEnemy
 {
     public Transform player;
 
@@ -8,25 +8,32 @@ public class RangedEnemy : MonoBehaviour
     public float DesiredDistance = 8f;
     public float RetreatDistance = 4f;
     public float DetectionRadius = 10f;
+    public float MaxHealth = 100f;
 
     public GameObject projectilePrefab;
     public float FireRate = 1f;
     public float ReloadDuration = 2.5f;
 
+    [Header("Knockback")]
+    public float KnockbackForce = 5f;
+    public float KnockbackDuration = 0.3f;
+
+    private float _currentHealth;
     private float _lastFireTime;
     private bool _isReloading = false;
     private bool _isAttacking = false;  // New: track attack state
     private Vector2 _attackDirection;   // Store attack direction for animation event
-
+    private bool _isKnockedBack = false;
     private Rigidbody2D _rb;
     private Animator _animator;  // New: animator reference
     public Transform FirePoint;
-
+    private EnemyHealthBar _healthBar;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();  // New: get animator component
-        
+        _healthBar = GetComponentInChildren<EnemyHealthBar>();
+        _healthBar.SetHealth(_currentHealth, MaxHealth);
         // Auto-find player if not assigned
         if (player == null)
         {
@@ -110,6 +117,62 @@ public class RangedEnemy : MonoBehaviour
         // Attack is complete, start reload
         _isAttacking = false;
         StartCoroutine(ReloadPause());
+    }
+    public void TakeDamage(float damage, Vector2 knockbackDirection)
+    {
+
+        _currentHealth -= damage;
+        _healthBar.SetHealth(_currentHealth, MaxHealth);
+
+        // Apply knockback
+        StartCoroutine(ApplyKnockback(knockbackDirection));
+
+        // Trigger damage animation
+        if (_animator != null)
+        {
+            _animator.SetTrigger("TakeDamage");
+        }
+
+        if (_currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        // Trigger death animation
+        if (_animator != null)
+        {
+            _animator.SetTrigger("Die");
+        }
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
+        // Disable the enemy after a short delay to allow death animation to play
+        Destroy(gameObject, 2f);
+    }
+    System.Collections.IEnumerator ApplyKnockback(Vector2 direction)
+    {
+        _isKnockedBack = true;
+        _rb.linearVelocity = direction.normalized * KnockbackForce;
+        yield return new WaitForSeconds(KnockbackDuration);
+
+        float slowDownTime = 0.3f;
+        float elapsedTime = 0f;
+        Vector2 startVelocity = _rb.linearVelocity;
+
+        while (elapsedTime < slowDownTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / slowDownTime;
+            _rb.linearVelocity = Vector2.Lerp(startVelocity, Vector2.zero, t);
+            yield return null;
+        }
+
+        _isKnockedBack = false;
     }
 
     float GetAttackAnimationDuration()
