@@ -204,7 +204,6 @@ public class BossBehaviour : MonoBehaviour
 
     public void Flash()
     {
-        Debug.Log("1");
         // Cancel only the currently running flash coroutine
         if (flashRoutine != null)
         {
@@ -228,7 +227,6 @@ public class BossBehaviour : MonoBehaviour
 
     private IEnumerator FlashRoutine()
     {
-        Debug.Log("2");
         sr.color = Color.red;
         yield return new WaitForSeconds(flashDuration);
         sr.color = originalColor;

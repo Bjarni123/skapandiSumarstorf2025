@@ -49,6 +49,7 @@ public class RockDrop : MonoBehaviour
 
         rockVisual.transform.position = groundPosition;
 
+        // does not work atm
         // Step 3: Damage player
         Collider2D hit = Physics2D.OverlapCircle(groundPosition, damageRadius, playerLayer);
         if (hit != null)
@@ -63,6 +64,8 @@ public class RockDrop : MonoBehaviour
         // Step 5: Clean up the falling rock
         Destroy(gameObject);
     }
+
+
 
     private void OnDrawGizmosSelected()
     {
