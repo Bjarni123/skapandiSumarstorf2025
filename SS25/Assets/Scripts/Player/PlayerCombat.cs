@@ -159,7 +159,16 @@ public class PlayerCombat : MonoBehaviour
         spawnedHitbox = Instantiate(swishPrefab, worldPos + spawnOffset, rot);
         PlayerSwing1 hb = spawnedHitbox.GetComponent<PlayerSwing1>();
 
-        float damage = combo[comboCounter].damage;
+        float baseDamage = combo[comboCounter].damage;
+        float axeDamage = 1f;
+
+        var weapon = GetComponent<AgentWeapon>();
+        if (weapon != null)
+        {
+            axeDamage = weapon.GetAxeParameter("Damage");
+        }
+
+        float damage = baseDamage * axeDamage; // Change the values here for the damage
 
         hb.Initialize(damage, dir);
     }

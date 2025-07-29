@@ -9,11 +9,13 @@ public class AgentWeapon : MonoBehaviour
 
     [SerializeField]
     private EquippableItemsSO axe;
+
     [SerializeField]
     private List<ItemParameter> axeState;
 
     [SerializeField]
     private EquippableItemsSO pickaxe;
+
     [SerializeField]
     private List<ItemParameter> pickaxeState;
 
@@ -77,38 +79,38 @@ public class AgentWeapon : MonoBehaviour
         }
     }
 
+    public float GetAxeParameter(string paramName)
+    {
+        if (axe == null || axeState == null) return 1f;
+
+        foreach (var param in axeState)
+        {
+            if (param.itemParameter.ParameterName == paramName)
+                return param.value;
+        }
+        return 1f; // default multiplier
+    }
+
+    public float GetPickaxeParameter(string paramName)
+    {
+        if (pickaxe == null || pickaxeState == null) return 1f;
+
+        foreach (var param in pickaxeState)
+        {
+            if (param.itemParameter.ParameterName == paramName)
+                return param.value;
+        }
+        return 1f; // default multiplier
+    }
+
+
     public EquippableItemsSO GetAxe()
     {
         return axe;
     }
 
-    /*public void SetWeapon(EquippableItemsSO weaponItemSO, List<ItemParameter> itemState)
+    public EquippableItemsSO GetPickaxe()
     {
-        if (weapon != null && weapon != weaponItemSO)
-        {
-            inventoryData.AddItem(weapon, 1, itemCurrentState);
-        }
-
-        this.weapon = weaponItemSO;
-        this.itemCurrentState = new List<ItemParameter>(itemState);
-        ModifyParameters();
-    }*/
-
-
-    /*private void ModifyParameters()
-    {
-        foreach (var parameter in parametersToModify)
-        {
-            if (itemCurrentState.Contains(parameter))
-            {
-                int index = itemCurrentState.IndexOf(parameter);
-                float newValue = itemCurrentState[index].value + parameter.value;
-                itemCurrentState[index] = new ItemParameter
-                {
-                    itemParameter = parameter.itemParameter,
-                    value = newValue
-                };
-            }
-        }
-    }*/
+        return pickaxe;
+    }
 }

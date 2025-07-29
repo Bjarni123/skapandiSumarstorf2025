@@ -43,11 +43,20 @@ namespace Inventory.Model
 
         private int AddItemToFirstFreeSlot(ItemSO item, int quantity, List<ItemParameter> itemState = null)
         {
+            List<ItemParameter> fallbackList;
+
+            if (item is EquippableItemsSO equip && equip.parameters.Count > 0)
+                fallbackList = equip.parameters;
+            else
+                fallbackList = item.DefaultParametersList;
+
             InventoryItem newItem = new InventoryItem
             {
                 item = item,
                 quantity = quantity,
-                itemState = new List<ItemParameter>(itemState == null ? item.DefaultParametersList : itemState)
+                itemState = itemState != null && itemState.Count > 0
+                    ? new List<ItemParameter>(itemState)
+                    : new List<ItemParameter>(fallbackList)
             };
 
             for (int i = 0; i < inventoryItems.Count; i++)
@@ -60,6 +69,7 @@ namespace Inventory.Model
             }
             return 0;
         }
+
 
         private bool IsInventoryFull()
             => inventoryItems.Where(item => item.IsEmpty).Any() == false;
