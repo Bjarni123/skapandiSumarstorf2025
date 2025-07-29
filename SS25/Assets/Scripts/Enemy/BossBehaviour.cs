@@ -44,6 +44,23 @@ public class BossBehaviour : MonoBehaviour
     private Coroutine knockbackRoutine;
 
 
+    [Header("Flash Settings")]
+    [SerializeField] float flashDuration = 0.1f;
+    private SpriteRenderer sr;
+    private Color originalColor;
+    private Coroutine flashRoutine;
+
+    void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        if (sr == null)
+        {
+            Debug.LogError("No SpriteRenderer found on " + gameObject.name);
+        }
+        originalColor = sr.color;
+    }
+
+
     private void Start()
     {
         tf = GetComponent<Transform>();
@@ -161,7 +178,7 @@ public class BossBehaviour : MonoBehaviour
     public void TakeDamage(float dmg_amount)
     {
         currentHealth -= dmg_amount;
-
+        Flash();
         anim.Play("Boss1_TakeHit");
 
         /*if (currentHealth <= 0) { Die(); }
@@ -185,6 +202,18 @@ public class BossBehaviour : MonoBehaviour
         knockbackRoutine = StartCoroutine(HandleKnockback(knockbackDir.normalized));
     }
 
+    public void Flash()
+    {
+        Debug.Log("1");
+        // Cancel only the currently running flash coroutine
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
+    }
+
     private IEnumerator HandleKnockback(Vector2 dir)
     {
         isKnockedback = true;
@@ -195,6 +224,14 @@ public class BossBehaviour : MonoBehaviour
 
         rb.linearVelocity = Vector2.zero;
         isKnockedback = false;
+    }
+
+    private IEnumerator FlashRoutine()
+    {
+        Debug.Log("2");
+        sr.color = Color.red;
+        yield return new WaitForSeconds(flashDuration);
+        sr.color = originalColor;
     }
 
 

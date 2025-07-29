@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SimpleEnemy : MonoBehaviour
 {
@@ -52,6 +53,22 @@ public class SimpleEnemy : MonoBehaviour
         Dead
     }
     private EnemyState _currentState = EnemyState.Idle;
+
+    [Header("Flash Settings")]
+    [SerializeField] float flashDuration = 0.1f;
+    private SpriteRenderer sr;
+    private Color originalColor;
+    private Coroutine flashRoutine;
+
+    void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        if (sr == null)
+        {
+            Debug.LogError("No SpriteRenderer found on " + gameObject.name);
+        }
+        originalColor = sr.color;
+    }
 
     void Start()
     {
@@ -301,6 +318,7 @@ public class SimpleEnemy : MonoBehaviour
         if (_currentState == EnemyState.Dead) return;
         
         _currentHealth -= damage;
+        Flash();
         
         // Trigger damage animation
         if (_animator != null)
@@ -321,7 +339,8 @@ public class SimpleEnemy : MonoBehaviour
         if (_currentState == EnemyState.Dead) return;
         
         _currentHealth -= damage;
-        
+        Flash();
+
         // Apply knockback
         StartCoroutine(ApplyKnockback(knockbackDirection));
         
@@ -335,6 +354,27 @@ public class SimpleEnemy : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void Flash()
+    {
+        Debug.Log("1");
+        // Cancel only the currently running flash coroutine
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
+    }
+
+
+    private IEnumerator FlashRoutine()
+    {
+        Debug.Log("2");
+        sr.color = Color.red;
+        yield return new WaitForSeconds(flashDuration);
+        sr.color = originalColor;
     }
 
     void Die()

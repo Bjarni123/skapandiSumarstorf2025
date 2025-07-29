@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -9,7 +10,22 @@ public class PlayerHealth : MonoBehaviour
 
     public event System.Action OnHealthChanged;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Flash Settings")]
+    [SerializeField] float flashDuration = 0.1f;
+    private SpriteRenderer sr;
+    private Color originalColor;
+    private Coroutine flashRoutine;
+
+    void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        if (sr == null)
+        {
+            Debug.LogError("No SpriteRenderer found on " + gameObject.name);
+        }
+        originalColor = sr.color;
+    }
+
     void Start()
     {
         CurrentHealth = MaxHealth;
@@ -29,6 +45,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         CurrentHealth -= damage;
+        Flash();
         Debug.Log("Player takes " + damage + " damage! Current health: " + CurrentHealth);
 
         if (CurrentHealth <= 5)
@@ -47,6 +64,27 @@ public class PlayerHealth : MonoBehaviour
             // Here you can add logic for player death, like respawning or ending the game
         }
         OnHealthChanged?.Invoke();
+    }
+
+    public void Flash()
+    {
+        Debug.Log("1");
+        // Cancel only the currently running flash coroutine
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
+    }
+
+
+    private IEnumerator FlashRoutine()
+    {
+        Debug.Log("2");
+        sr.color = Color.red;
+        yield return new WaitForSeconds(flashDuration);
+        sr.color = originalColor;
     }
 
     public void AddHealth(int heal)
