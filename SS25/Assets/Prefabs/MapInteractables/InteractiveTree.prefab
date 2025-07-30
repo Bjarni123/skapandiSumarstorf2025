@@ -1211,10 +1211,8 @@ MonoBehaviour:
   fullTree: {fileID: 4670110993384948202}
   choppedTrunk: {fileID: 5523114234339628400}
   logPrefab: {fileID: 8490381777176078360, guid: 6641f2900fdea7d4e9b46fe958c60527, type: 3}
-  regrowDelay: 5
   fadeDuration: 0.5
   progressBar: {fileID: 8181968941443240743}
-  chopTime: 2
 --- !u!1 &3993501202003060556
 GameObject:
   m_ObjectHideFlags: 0
