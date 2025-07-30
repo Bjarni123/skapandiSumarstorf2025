@@ -57,7 +57,7 @@ public class PlayerSwing1 : MonoBehaviour
             return;
 
         // 3) Grab the concrete EnemyHealth (or whatever script has TakeDamage)
-        var enemyHealth = go.GetComponent<SimpleEnemy>();
+        var enemyHealth = go.GetComponent<IEnemy>();
         if (enemyHealth != null)
         {
             Debug.Log($"{go.name} takes {damage} damage from player.");

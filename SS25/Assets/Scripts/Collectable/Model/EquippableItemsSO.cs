@@ -11,7 +11,8 @@ namespace Inventory.Model
         Pickaxe,
         Helmet,
         Chestplate,
-        Boots
+        Boots,
+        FishingRod
     }
 
     [CreateAssetMenu]
