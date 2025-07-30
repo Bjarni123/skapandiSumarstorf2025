@@ -204,6 +204,7 @@ public class BossBehaviour : MonoBehaviour
 
     public void Flash()
     {
+
         // Cancel only the currently running flash coroutine
         if (flashRoutine != null)
         {
