@@ -23,4 +23,4 @@ MonoBehaviour:
   equipmentType: 5
   parameters:
   - itemParameter: {fileID: 0}
-    value: 5
+    value: 20
