@@ -1,19 +1,28 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenuManager : MonoBehaviour
 {
-    [Header("UI References")]
-    public GameObject pauseMenuUI;
-    
-    [Header("Input Settings")]
-    public KeyCode pauseKey = KeyCode.Escape;
-    
+    [SerializeField]
+    private GameObject pauseMenuUI;
+
+    [SerializeField]
+    private Button RestartButton;
+
+    [SerializeField]
+    private Button ContinueButton;
+
+    // [Header("Input Settings")]
+    // public KeyCode pauseKey = KeyCode.Escape;
+
     private bool isPaused = false;
 
     void Update()
     {
         // Check for pause input
-        if (Input.GetKeyDown(pauseKey))
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
         }
@@ -30,25 +39,19 @@ public class PauseMenuManager : MonoBehaviour
 
     void Pause()
     {
-        pauseMenuUI.SetActive(true);
+        pauseMenuUI.SetActive(true); // Show the menu
         Time.timeScale = 0f;
         isPaused = true;
-        
-        // Optional: Show cursor when paused
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
     void Resume()
     {
-        pauseMenuUI.SetActive(false);
+        pauseMenuUI.SetActive(false); // Hide the menu
         Time.timeScale = 1f;
         isPaused = false;
-        
-        // Optional: Hide cursor when resumed (common for FPS games)
-        // Uncomment these lines if you want to hide the cursor during gameplay
-        // Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible = false;
+        // Optionally hide cursor here
     }
 
     // Public getter for other scripts to check pause state
@@ -69,5 +72,12 @@ public class PauseMenuManager : MonoBehaviour
     {
         if (isPaused)
             Resume();
+    }
+
+    // Call this from the Play button to restart the game
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0); // Use your main menu scene name here
     }
 }
