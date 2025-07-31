@@ -200,8 +200,9 @@ MonoBehaviour:
   player: {fileID: 0}
   DetectionRadius: 12
   MoveSpeed: 2
-  maxHealth: 200
+  maxHealth: 500
   currentHealth: 0
   knockbackForce: 1
   knockbackDuration: 0.5
   isKnockedback: 0
+  flashDuration: 0.1
