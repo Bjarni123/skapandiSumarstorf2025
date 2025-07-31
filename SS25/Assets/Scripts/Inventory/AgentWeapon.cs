@@ -18,6 +18,21 @@ public class AgentWeapon : MonoBehaviour
     private List<ItemParameter> pickaxeState;
 
     [SerializeField]
+    private EquippableItemsSO helmet;
+    [SerializeField]
+    private List<ItemParameter> helmetState;
+
+    [SerializeField]
+    private EquippableItemsSO chestplate;
+    [SerializeField]
+    private List<ItemParameter> chestplateState;
+
+    [SerializeField]
+    private EquippableItemsSO boots;
+    [SerializeField]
+    private List<ItemParameter> bootsState;
+
+    [SerializeField]
     private InventorySO inventoryData;
 
     [SerializeField]
@@ -36,6 +51,18 @@ public class AgentWeapon : MonoBehaviour
                 pickaxe = weaponItemSO;
                 pickaxeState = new List<ItemParameter>(itemState);
                 ModifyParameters(pickaxeState);
+                break;
+            case EquipmentType.Helmet:
+                helmet = weaponItemSO;
+                helmetState = new List<ItemParameter>(itemState);
+                break;
+            case EquipmentType.Chestplate:
+                chestplate = weaponItemSO;
+                chestplateState = new List<ItemParameter>(itemState);
+                break;
+            case EquipmentType.Boots:
+                boots = weaponItemSO;
+                bootsState = new List<ItemParameter>(itemState);
                 break;
             default:
                 break;
@@ -77,38 +104,86 @@ public class AgentWeapon : MonoBehaviour
         }
     }
 
+    public float GetAxeParameter(string paramName)
+    {
+        if (axe == null || axeState == null) return 1f;
+
+        foreach (var param in axeState)
+        {
+            if (param.itemParameter.ParameterName == paramName)
+                return param.value;
+        }
+        return 1f; // default multiplier
+    }
+
     public EquippableItemsSO GetAxe()
     {
         return axe;
     }
 
-    /*public void SetWeapon(EquippableItemsSO weaponItemSO, List<ItemParameter> itemState)
+    public float GetPickaxeParameter(string paramName)
     {
-        if (weapon != null && weapon != weaponItemSO)
+        if (pickaxe == null || pickaxeState == null) return 1f;
+
+        foreach (var param in pickaxeState)
         {
-            inventoryData.AddItem(weapon, 1, itemCurrentState);
+            if (param.itemParameter.ParameterName == paramName)
+                return param.value;
         }
+        return 1f; // default multiplier
+    }
 
-        this.weapon = weaponItemSO;
-        this.itemCurrentState = new List<ItemParameter>(itemState);
-        ModifyParameters();
-    }*/
-
-
-    /*private void ModifyParameters()
+    public EquippableItemsSO GetPickaxe()
     {
-        foreach (var parameter in parametersToModify)
+        return pickaxe;
+    }
+
+    public float GetHelmetParameter(string paramName)
+    {
+        if (helmet == null || helmetState == null) return 0f;
+
+        foreach (var param in helmetState)
         {
-            if (itemCurrentState.Contains(parameter))
-            {
-                int index = itemCurrentState.IndexOf(parameter);
-                float newValue = itemCurrentState[index].value + parameter.value;
-                itemCurrentState[index] = new ItemParameter
-                {
-                    itemParameter = parameter.itemParameter,
-                    value = newValue
-                };
-            }
+            if (param.itemParameter.ParameterName == paramName)
+                return param.value;
         }
-    }*/
+        return 1f; // default multiplier
+    }
+
+    public EquippableItemsSO GetHelmet()
+    {
+        return helmet;
+    }
+
+    public float GetChestplateParameter(string paramName)
+    {
+        if (chestplate == null || chestplateState == null) return 0f;
+        foreach (var param in chestplateState)
+        {
+            if (param.itemParameter.ParameterName == paramName)
+                return param.value;
+        }
+        return 1f; // default multiplier
+    }
+
+    public EquippableItemsSO GetChestplate()
+    {
+        return chestplate;
+    }
+
+    public float GetBootsParameter(string paramName)
+    {
+        if (boots == null || bootsState == null) return 0f;
+        foreach (var param in bootsState)
+        {
+            if (param.itemParameter.ParameterName == paramName)
+                return param.value;
+        }
+        return 1f; // default multiplier
+    }
+
+    public EquippableItemsSO GetBoots()
+    {
+        return boots;
+    }
 }

@@ -13,37 +13,37 @@ public class TreeInteractable : Interactable
     [SerializeField]
     private GameObject logPrefab;     // The log that will be dropped
 
-    [SerializeField] 
-    private float regrowDelay = 5f;
+    private float regrowDelay = 120f;
 
     [SerializeField]
-    private float fadeDuration = 0.5f;     // Optional fade time
+    private float fadeDuration = 0.5f;
 
     [SerializeField]
     private InteractionProgressBar progressBar; // Reference to the interaction progress bar
-
-    [SerializeField]
-    private float chopTime = 2f;
 
     private bool isChopped = false;
 
     public override void Interact()
     {
-        if (isChopped || isChopping)
+        if (isChopped || isChopping || !isPlayerInRange)
+            return;
+
+        // Get equipped axe from player
+        var player = GameObject.FindWithTag("Player");
+        var weapon = player?.GetComponent<AgentWeapon>();
+        var axe = weapon?.GetAxe();
+
+        if (axe == null)
         {
-            Debug.Log("Cannot chop right now.");
+            Debug.Log("You need an axe to chop this tree!");
             return;
         }
 
-        if (!isPlayerInRange)
-        {
-            Debug.Log("You're not close enough to chop.");
-            return;
-        }
+        float chopSpeed = weapon.GetAxeParameter("Chop Speed");
 
         isChopping = true;
 
-        progressBar.StartBar(chopTime, OnChopComplete);
+        progressBar.StartBar(chopSpeed, OnChopComplete);
 
         // TODO: drop wood based on tool, play animation, destroy tree
     }
@@ -67,7 +67,16 @@ public class TreeInteractable : Interactable
         StartCoroutine(FadeOutFullTree());
         StartCoroutine(RegrowTreeAfterDelay());
 
-        for (int i = 0; i < 3; i++)
+        // Drop multiplier
+        var player = GameObject.FindWithTag("Player");
+        var weapon = player?.GetComponent<AgentWeapon>();
+
+        int dropMin = Mathf.RoundToInt(weapon?.GetAxeParameter("Drop Min") ?? 3);
+        int dropMax = Mathf.RoundToInt(weapon?.GetAxeParameter("Drop Max") ?? 3);
+
+        int logAmount = Random.Range(dropMin, dropMax + 1);
+
+        for (int i = 0; i < logAmount; i++)
         {
             float xOffset = Random.Range(0f, 1f);
             Vector3 spawnPos = transform.position + new Vector3(xOffset, 0f, 0f);
@@ -131,11 +140,16 @@ public class TreeInteractable : Interactable
 
     private IEnumerator SlideLogDown(GameObject log, float distance, float duration)
     {
+        if (log == null) yield break;
+
         Vector3 startPos = log.transform.position;
         Vector3 endPos = startPos + new Vector3(0, -distance, 0);
         float elapsed = 0f;
+
         while (elapsed < duration)
         {
+            if (log == null) yield break; // Check if log still exists
+
             float t = elapsed / duration;
             // Ease out: fast then slow
             t = 1f - Mathf.Pow(1f - t, 2f);
@@ -143,7 +157,9 @@ public class TreeInteractable : Interactable
             elapsed += Time.deltaTime;
             yield return null;
         }
-        log.transform.position = endPos;
+
+        if (log != null)
+            log.transform.position = endPos;
     }
 }
 

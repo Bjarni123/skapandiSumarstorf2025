@@ -109,7 +109,6 @@ SpriteRenderer:
   m_SortingLayer: -4
   m_SortingOrder: 0
   m_Sprite: {fileID: 4647603237904366515, guid: 391c90e628e626b40a4d6da97f221450, type: 3}
-  m_Sprite: {fileID: 6193041505525202915, guid: 62436d2ca0b33f24ea8403bb0f99c449, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -174,9 +173,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2774354d293fe9f4aaec4bb0deddb5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboCD: 0.2
+  comboCD: 1
+  comboCD: 1
   attackCD: 0.5
-  nextComboAttackDelay: 0.6
+  nextComboAttackDelay: 1.5
+  nextComboAttackDelay: 1.5
   combo:
   - {fileID: 11400000, guid: a1b7222d6aa348a439c949fb2351682b, type: 2}
   - {fileID: 11400000, guid: d3e9e01f6b037594f81ce79074b082f5, type: 2}
@@ -284,19 +285,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0084427, y: 0.039923847}
+  m_Offset: {x: -0.011367798, y: 0.1917572}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.512227, y: 0.35137463}
     oldSize: {x: 1.0833334, y: 1.3333334}
-    pivot: {x: 0.53823835, y: 0.34573787}
-    oldSize: {x: 1.1666666, y: 1.3333334}
     newSize: {x: 0.9375, y: 1.4375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.630185, y: 1.145868}
+  m_Size: {x: 0.6081848, y: 1.3615112}
   m_EdgeRadius: 0
 --- !u!114 &7196362959825420135
 MonoBehaviour:
@@ -311,4 +310,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
-  CurrentHealth: 0
+  CurrentHealth: 100
+  healthBarPrefab: {fileID: 3585930527447589222, guid: 13d366aca4c29d448ab884cf179b081b, type: 3}
+  flashDuration: 0.1

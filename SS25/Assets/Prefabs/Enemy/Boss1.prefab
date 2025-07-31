@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 594589073465418749}
   - component: {fileID: 7539715869561617097}
   - component: {fileID: 7741579737348339866}
-  - component: {fileID: 6829182151618676696}
-  - component: {fileID: 7655358753000996684}
-  m_Layer: 0
+  - component: {fileID: 8723228365231779576}
+  - component: {fileID: 6812896135927974171}
+  m_Layer: 6
   m_Name: Boss1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,11 +136,48 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 2
-  m_SleepingMode: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
---- !u!114 &6829182151618676696
+  m_Constraints: 4
+--- !u!70 &8723228365231779576
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8610353770194810471}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.08202418, y: -1.3659292}
+  m_Size: {x: 2.3901365, y: 1.2280151}
+  m_Direction: 1
+--- !u!114 &6812896135927974171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,26 +186,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8610353770194810471}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9614e28c451283f47934f543e974dc35, type: 3}
+  m_Script: {fileID: 11500000, guid: 36e7bba40ddf8a04f81d5516c26d4f14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rockPrefab: {fileID: 5138267630237229032, guid: f5955f55c79ee5441ab3b333febd9858, type: 3}
+  abilityCD: 15
+  abilityRadius: 10
+  numberOfRocks: 8
+  Attack1Prefab: {fileID: 3263598504711959360, guid: fc113d1650dbbda4b99a2adc623e13ea, type: 3}
+  Attack2Prefab: {fileID: 5714253877787408078, guid: ce4358fcfc753e744af897b85036f80f, type: 3}
+  attackRange: 4
+  attackCD: 3
   player: {fileID: 0}
-  DetectionRadius: 10
+  DetectionRadius: 12
   MoveSpeed: 2
---- !u!114 &7655358753000996684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8610353770194810471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 755c6a49053b97d428fc0ec67f58d2ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  AttackRange: 1.5
-  AttackCooldown: 1
-  AttackDamage: 1
-  IsAttacking: 0
+  maxHealth: 500
+  currentHealth: 0
+  knockbackForce: 1
+  knockbackDuration: 0.5
+  isKnockedback: 0
+  flashDuration: 0.1

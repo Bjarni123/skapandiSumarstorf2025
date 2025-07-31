@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3d136b184e63b419941c46f4976a47, type: 3}
   m_Name: Beef
   m_EditorClassIdentifier: 
-  <IsStackable>k__BackingField: 0
-  <MaxStackSize>k__BackingField: 1
+  <IsStackable>k__BackingField: 1
+  <MaxStackSize>k__BackingField: 10
   <Name>k__BackingField: Beef
-  <Description>k__BackingField: Yummy
+  <Description>k__BackingField: Yummy, Restores 20 Health
   <ItemImage>k__BackingField: {fileID: 21300000, guid: a41aa0cc5a713014ebb0bf8b19d75ce4, type: 3}
   <DefaultParametersList>k__BackingField: []
   <WorldPrefab>k__BackingField: {fileID: 4136833576026137408, guid: 77694bae2dab3394b8d452ecdd5fe6ea, type: 3}
-  modifiersData: []
+  modifiersData:
+  - statModifier: {fileID: 11400000, guid: d12d5f294620e0a46b0670074ba1576e, type: 2}
+    value: 20
   <actionSFX>k__BackingField: {fileID: 0}

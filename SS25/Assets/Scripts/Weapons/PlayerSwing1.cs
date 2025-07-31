@@ -57,16 +57,24 @@ public class PlayerSwing1 : MonoBehaviour
             return;
 
         // 3) Grab the concrete EnemyHealth (or whatever script has TakeDamage)
-        var enemyHealth = go.GetComponent<SimpleEnemy>();
+        var enemyHealth = go.GetComponent<IEnemy>();
         if (enemyHealth != null)
         {
-            Debug.Log("Enemy should take dmg");
+            Debug.Log($"{go.name} takes {damage} damage from player.");
             enemyHealth.TakeDamage(damage, knockBackDir);
             hitEnemies.Add(go);
         }
         else
         {
             Debug.LogWarning($"Hitbox collided with {go.name} but no EnemyHealth found.");
+        }
+
+        // Boss damage
+        var bossHealth = go.GetComponent<BossBehaviour>();
+        if (bossHealth != null)
+        {
+            bossHealth.TakeDamage(damage, knockBackDir);
+            hitEnemies.Add(go);
         }
     }
 

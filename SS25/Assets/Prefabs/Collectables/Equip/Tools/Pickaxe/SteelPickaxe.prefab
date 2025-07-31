@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1962726326470923524}
   - component: {fileID: 6236587527520778782}
   m_Layer: 0
-  m_Name: PickaxeTest
+  m_Name: SteelPickaxe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

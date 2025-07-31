@@ -23,6 +23,10 @@ MonoBehaviour:
   equipmentType: 2
   parameters:
   - itemParameter: {fileID: 11400000, guid: 615691d16a588e847be91d65b04d36af, type: 2}
-    value: 1.5
-  - itemParameter: {fileID: 11400000, guid: 2b5aa9f1b9401d04bbeeb7c710f393ca, type: 2}
-    value: 2
+    value: 2.5
+  - itemParameter: {fileID: 11400000, guid: b5e0e74abf81acb49b9714e59daf238c, type: 2}
+    value: 3
+  - itemParameter: {fileID: 11400000, guid: 0ee35b6259a446f48855d48ca13e7dad, type: 2}
+    value: 5
+  - itemParameter: {fileID: 11400000, guid: 6a6bbc448abffb74b9e34df4c5e7a5b3, type: 2}
+    value: 3
