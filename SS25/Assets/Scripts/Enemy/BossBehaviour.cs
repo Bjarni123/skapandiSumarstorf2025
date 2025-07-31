@@ -179,10 +179,10 @@ public class BossBehaviour : MonoBehaviour
     {
         currentHealth -= dmg_amount;
         Flash();
-        anim.Play("Boss1_TakeHit");
+        // anim.Play("Boss1_TakeHit");
 
-        /*if (currentHealth <= 0) { Die(); }
-        else { anim.Play("Boss1_TakeHit"); }*/
+        if (currentHealth <= 0) { Die(); }
+        else { anim.Play("Boss1_TakeHit"); }
     }
 
     public void TakeDamage(float dmg_amount, Vector2 knockbackDir)
@@ -236,7 +236,7 @@ public class BossBehaviour : MonoBehaviour
 
     private void Die()
     {
-        return;
+        Destroy(gameObject);
     }
 
     public void RockAbility()
